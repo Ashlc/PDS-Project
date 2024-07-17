@@ -117,10 +117,20 @@ Edvar Monteiro da Silva Neto <br />
 *emsn@ic.ufal.br* <br />
 https://github.com/Edvar82
 
-José Janio Marinho de Catro Junior <br />
+José Janio Marinho de Castro Junior <br />
 *Cargo a definir* <br />
 *jjmc@ic.ufal.br* <br />
 https://github.com/Jani0Marinho
+
+João Pedro Castelo Branco Mendes <br />
+*Cargo a definir* <br />
+*jpcbm@ic.ufal.br* <br />
+https://github.com/Pedr0Castel0
+
+Carlos Eduardo Noslin Tenório Galvão <br />
+*Cargo a definir* <br />
+*centg@ic.ufal.br* <br />
+https://github.com/cedugalvao
 
 <!-- ## Status Reports
 
