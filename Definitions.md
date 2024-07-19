@@ -55,12 +55,14 @@ Acreditamos que por meio dessa apresentação iremos conseguir demonstrar de for
 
    * Campanhas de divulgação e conscientização sobre a importância do uso da plataforma.
 
-### **Risco 2** : Demora na resposta das autoridades aos problemas reportados. *Severidade Média e Probabilidade Alta*.
+### **Risco 2**: Falta de interesse por parte dos órgãos públicos em atender aos chamados. *Severidade Alta e Probabilidade Média*.
 
    Ações para mitigação do risco:
 
-   * Parcerias com órgãos públicos para agilizar a comunicação e a resolução dos problemas.
-   * Monitoramento contínuo do tempo de resposta e implementação de melhorias no processo de atendimento.
+   * Estabelecer parcerias estratégicas com organizações não governamentais e grupos de defesa dos direitos das pessoas com deficiência para pressionar por ação.
+   * Implementar um sistema de transparência que mostre publicamente as denúncias pendentes e as respostas das autoridades.
+   * Criar campanhas de conscientização para envolver a comunidade e aumentar a pressão pública sobre os órgãos responsáveis.
+
 
 
 <!--
