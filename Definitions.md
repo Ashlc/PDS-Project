@@ -47,6 +47,22 @@ Podemos pensar nessas pequenas versões como MVPs (do inglês, *minimum viable p
 
 Acreditamos que por meio dessa apresentação iremos conseguir demonstrar de forma clara e objetiva a ideia e motivação por trás do `[projeto]`. Saberemos que isso aconteceu com base na aprovação dos professores e na plena compreensão da proposta por parte dos professores e demais companheiros de classes.
 
+## Riscos
+
+### **Risco 1** : Baixa adesão dos usuários à plataforma. *Severidade Média e Probabilidade Alta*.
+
+   Ações para mitigação do risco:
+
+   * Campanhas de divulgação e conscientização sobre a importância do uso da plataforma.
+
+### **Risco 2** : Demora na resposta das autoridades aos problemas reportados. *Severidade Média e Probabilidade Alta*.
+
+   Ações para mitigação do risco:
+
+   * Parcerias com órgãos públicos para agilizar a comunicação e a resolução dos problemas.
+   * Monitoramento contínuo do tempo de resposta e implementação de melhorias no processo de atendimento.
+
+
 <!--
 
 #### Funcionalidades
