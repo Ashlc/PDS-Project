@@ -51,7 +51,7 @@ const Index = () => {
           <Search />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2 border border-black">
+              <Button variant="outline" className="gap-2 border border-border">
                 <RiFilter2Fill size={18} />
                 <p>Filtros</p>
               </Button>
@@ -102,13 +102,13 @@ const Index = () => {
           <Button
             variant={'outline'}
             size={'icon'}
-            className="border border-black rounded-full"
+            className="border border-border rounded-full"
             onClick={triggerLocation}
           >
             <RiFocus3Line size={20} />
           </Button>
         </div>
-        <div className="flex flex-row gap-2 bg-white items-center border border-black rounded-full px-5 py-3 relative">
+        <div className="flex flex-row gap-2 bg-background items-center border border-border rounded-full px-5 py-3 relative">
           <div className="text-sm">Reportar acessibilidade</div>
           <Button
             size="icon"

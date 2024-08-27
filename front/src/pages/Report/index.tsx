@@ -40,7 +40,7 @@ const Index = () => {
   } = useForm();
 
   const goHome = () => {
-    navigate('/');
+    navigate('/home');
   };
 
   const getLocationAddress = async () => {
@@ -92,7 +92,7 @@ const Index = () => {
         </Button>
         <h2>REPORTAR ACESSIBILIDADE</h2>
       </div>
-      <div className="border-t border-b border-black h-[160px] bg-blue-400">
+      <div className="border-t border-b border-border h-[160px] bg-blue-400">
         <MapContainer
           ref={mapRef}
           center={center}
