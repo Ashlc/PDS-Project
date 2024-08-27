@@ -10,13 +10,15 @@ interface IRequestArguments {
   data?: Record<string, unknown> | FormData; // Generic object for data
   token?: string;
   headers?: Record<string, string>; // Dictionary of headers
-  params?: unknown // Dictionary of query string parameters
+  params?: unknown; // Dictionary of query string parameters
   raw?: boolean; // If the response should be raw
   responseType?: 'json' | 'blob'; // Response type
   formData?: boolean; // If the data is a FormData object
 }
 
-const handleHeaders = (args: IRequestArguments): Record<string, string> => {
+export const handleHeaders = (
+  args: IRequestArguments,
+): Record<string, string> => {
   if (args.formData && args.token) {
     return {
       'Content-Type': 'multipart/form-data',
@@ -88,7 +90,4 @@ const del = (args: IRequestArguments): Promise<AxiosResponse> => {
   return a.request(config);
 };
 
-export {
-  del, get, post, put
-};
-
+export { del, get, post, put };

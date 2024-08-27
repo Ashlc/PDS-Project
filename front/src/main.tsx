@@ -9,7 +9,9 @@ import './index.css';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={qc}>
+      {/* <GeolocationProvider> */}
       <RouterProvider router={AppRoutes} />
+      {/* </GeolocationProvider> */}
     </QueryClientProvider>
   </StrictMode>,
 );

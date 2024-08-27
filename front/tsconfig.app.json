@@ -8,6 +8,7 @@
     "baseUrl": "./src",
     "paths": {
       "@components/*": ["components/*"],
+      "@components/ui/*": ["components/ui/*"],
       "@pages/*": ["pages/*"],
       "@utils/*": ["utils/*"],
       "@interfaces/*": ["interfaces/*"],
@@ -30,5 +31,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src", "src/utils/cn.ts"]
 }
