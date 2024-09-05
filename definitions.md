@@ -109,6 +109,7 @@ Definimos que o problema que o nosso projeto tratará será a falta de uma ferra
    Ações para mitigação do risco:
 
    * Campanhas de divulgação e conscientização sobre a importância do uso da plataforma.
+   * Desenvolver uma interface amigável e acessível para garantir uma experiência de usuário positiva.
 
 ### **Risco 2**: Falta de interesse por parte dos órgãos públicos em atender aos chamados. *Severidade Alta e Probabilidade Média*.
 
@@ -118,6 +119,43 @@ Definimos que o problema que o nosso projeto tratará será a falta de uma ferra
    * Implementar um sistema de transparência que mostre publicamente as denúncias pendentes e as respostas das autoridades.
    * Criar campanhas de conscientização para envolver a comunidade e aumentar a pressão pública sobre os órgãos responsáveis.
 
+### **Risco 3** : Falta de aptidão do grupo com as ferramentas selecionadas*. *Severidade Média e Probabilidade Baixa*.
+   
+   Ações para mitigação do risco:
+
+   * Realizar reuniões de nivelamento entre os membros da equipe;
+   * Realizar estudos individuais ou em grupo das ferramentas selecionadas;
+   * Selecionar ferramentas que os membros do grupo tenha conhecimento;
+
+### **Risco 4** : Biblioteca de geolocalização com número de requisições limitada*. *Severidade Alta e Probabilidade Baixa*.
+   
+   Ações para mitigação do risco:
+
+   * Utilizar uma biblioteca sem limite de requisições;
+   * Adquirir licença da biblioteca;
+
+### **Risco 5** : Atraso nas metas e entregas*. *Severidade Média e Probabilidade Média*.
+ 
+   Ações para mitigação do risco:
+
+   * Definir metas e prazos realísticos, possíveis de serem cumpridos;
+   * Quando possível, realocar esforços para atividades que estejam atrasadas ao previsto;
+   * Utilizar metodologias ágeis para monitorar o progresso e ajustar o planejamento conforme as necessidades;
+   * Prever buffer de tempo em tarefas críticas para absorver possíveis atrasos sem comprometer o cronograma geral.
+
+### **Risco 6**: Dificuldade em obter feedback e sugestões dos usuários*. *Severidade Média e Probabilidade Alta*.
+
+   Ações para mitigação do risco:
+
+   * Criar canais de comunicação para facilitar o envio de sugestões e críticas;
+   * Realizar pesquisas de satisfação.
+
+### **Risco 7**: Mudanças legislativas que impactem o projeto*. *Severidade Alta e Probabilidade Baixa.*
+
+   Ações para mitigação do risco:
+
+   * Monitorar possíveis alterações na legislação que podem afetar o projeto;
+   * Adaptar rapidamente a plataforma em caso de novas regulamentações.
 
 
 <!--
