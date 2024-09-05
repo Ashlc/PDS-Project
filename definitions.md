@@ -94,10 +94,13 @@ Podemos pensar nessas pequenas versões como MVPs (do inglês, *minimum viable p
 
 ### Apresentação da proposta inicial do Andarilho - 19/07/2024
 
-Acreditamos que por meio dessa apresentação iremos conseguir demonstrar de forma clara e objetiva a ideia e motivação por trás do `[projeto]`. Saberemos que isso aconteceu com base na aprovação dos professores e na plena compreensão da proposta por parte dos professores e demais companheiros de classes.
+Acreditamos que por meio dessa apresentação iremos conseguir demonstrar de forma clara e objetiva a ideia e motivação por trás do Andarilho. Saberemos que isso aconteceu com base na aprovação dos professores e na plena compreensão da proposta por parte dos professores e demais companheiros de classes.
 
-### Apresentação da proposta inicial do `[projeto]` - 19/07/2024
+### Definição do problema a ser tratado - 23/07/2024
 
+Definimos que o problema que o nosso projeto tratará será a falta de uma ferramenta centralizada para realização de denúncias de falta de acessibilidade em ambientes e serviços públicos e privados aos órgãos competentes, usando-se de estatísticas e leis que embasariam nossa proposta. Saberemos que isso aconteceu com base na aprovação do professor Ig Ibert.
+
+### Marco 3 (...) - 23/07/2024
 
 ## Riscos
 
