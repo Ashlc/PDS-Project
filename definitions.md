@@ -17,25 +17,74 @@ Para pessoas com deficiência e mobilidade reduzida, cujo problema é a falta de
 
 Uma persona representa um usuário do produto e essa descrição deve falar não só o papel, mas também suas necessidades e seus objetivos. Isso cria uma representação realista dos usuários, auxiliando a equipe a descrever funcionalidades a partir do ponto de vista de quem vai usar o produto (Aguiar, 2021).
 
-### Pessoa com deficiência
+### Mariana - Estudante com deficiência
 
 *O que ela faz?*
 
-Pessoa com deficiência que frequenta locais públicos e privados e encontra dificuldades de acessibilidade.
+Mariana é uma aluna determinada e independente, que valoriza sua autonomia ao navegar pela cidade para realizar suas atividades diárias. Ela sabe da importância de uma infraestrutura acessível e busca constantemente por recursos e informações que facilitem sua mobilidade e garantam o acesso a todos os serviços públicos.
+
+*O que ela necessita?*
+
+- Infraestrutura urbana acessível, com rampas, sinalização adequada e transporte público adaptado;
+- Informações claras e centralizadas sobre os direitos de acessibilidade e como denunciar infrações;
+- Apoio para garantir que seus direitos sejam respeitados e que sua mobilidade não seja comprometida.
 
 *O que ela espera?*
 
-Uma forma fácil e rápida de denunciar problemas de acessibilidade, com uma interface que atenda às suas necessidades específicas
+- Viver em uma cidade onde possa se deslocar livremente e participar plenamente da vida social e profissional.
+- Ver melhorias concretas na infraestrutura que permitam a inclusão e acessibilidade.
+- Sentir-se valorizada e respeitada pela sociedade e pelas autoridades governamentais.
 
-### Cuidador ou ajudante
+### Edilson - Telefonista do ADEFSMIC (Associação dos Deficientes Fisícos de São Miguel dos Campos)
 
-*O que ela faz?*
+Edilson é cadeirante e trabalha como telefonista do ADEFSMIC e possui experiência de 26 anos trabalhando com o público PCD. Edilson tem conhecimento e vivência com a situação da falta de acessibilidade nos lugares públicos e privados e tenta proporcionar o melhor atendimento e serviço à quem relata suas dificuldades ao órgão.
 
-Cuidador de pessoa com deficiência que frequentemente enfrenta barreiras de acessibilidade ao acompanhar seu cliente.
+*O que ele necessita?*
 
-*O que ela espera?*
+- Infraestrutura urbana acessível, com rampas, sinalização adequada e transporte público adaptado.
+- Mais informações para o público e órgão;
+- Cumprimento das leis de acessibilidade.
 
-Uma plataforma que permita denunciar irregularidades de acessibilidade e acompanhar o progresso das soluções de maneira eficiente e clara.
+*O que ele espera?*
+
+- Que os locais e serviços cumpram as leis de acessibilidade;
+- Que ele possa se mover mais facilmente pelos lugares;
+- Que os transportes sejam adaptados aos PCDs;
+
+### Janílson - Aposentado e deficiente físico
+
+Janílson é um senhor aposentado que possui deficiência física. Ele relata ter muitas complicações para se locomover na cidade, enfrentando problemas em ambientes abertos, fechados e com a falta de transporte adaptado.
+
+*O que ele necessita?*
+
+- Mais transportes adaptados para PCDs;
+- Estabelecimentos adaptados para PDCs;
+- Melhor atendimento para o público PCD nos estabelecimentos.
+
+*O que ele espera?*
+
+- Que os locais e serviços cumpram as leis de acessibilidade;
+- Que ele possa se mover mais facilmente pelos lugares;
+- Que os transportes sejam adaptados aos PCDs;
+
+### Ruan - Estudante com cegueira total
+
+Ruan é um estudante de universidade com conhecimento de seus direitos e crítico ativo da falta de condições proporcionadas aos PCDs. Ele sabe do descumprimento das leis por parte das instituições e tem conhecimento de como realizar as denúncias dos problemas, porém a falta de mudanças e respostas o distancia de denunciar.
+
+*O que ele necessita?*
+
+- Estabelecimentos com melhores adaptações aos PCDs;
+- Mudanças nas calçadas para que sejam mais fáceis de se locomover;
+- Barras de apoio na universidade;
+- Indicadores de direção na universidade;
+- Banheiros mais acessíveis.
+
+*O que ele espera?*
+
+- Que a universidade seja mais adaptada às necessidades dos PCDs;
+- Que as pessoas sejam mais abertas à inclusão social;
+- Que os estabelecimentos e serviços sejam melhor adaptados aos PCDs.
+
 
 ## Marcos
 
@@ -43,9 +92,12 @@ Devemos entregar **pequenas versões frequentes**. A equipe deve definir os marc
 
 Podemos pensar nessas pequenas versões como MVPs (do inglês, *minimum viable product*). MVP é a versão mais simples de um produto que pode ser disponibilizada para a validação de um pequeno conjunto de hipóteses sobre o negócio. Após ser **construído,** o MVP é colocado à prova. Com isso, teremos dados que possibilitam **medir** o seu uso e, portanto, gerar o **aprendizado** desejado (Caroli, 2018).
 
-### Apresentação da proposta inicial do `[projeto]` - 19/07/2024
+### Apresentação da proposta inicial do Andarilho - 19/07/2024
 
 Acreditamos que por meio dessa apresentação iremos conseguir demonstrar de forma clara e objetiva a ideia e motivação por trás do `[projeto]`. Saberemos que isso aconteceu com base na aprovação dos professores e na plena compreensão da proposta por parte dos professores e demais companheiros de classes.
+
+### Apresentação da proposta inicial do `[projeto]` - 19/07/2024
+
 
 ## Riscos
 
@@ -111,7 +163,6 @@ https://github.com/edgebr/templates-artefatos
 ### Aplicativo Mobile
 [descrição breve]
 https://github.com/edgebr/templates-artefatos -->
-
 
 <!-- ## Stakeholders
 
