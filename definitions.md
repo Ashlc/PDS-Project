@@ -205,17 +205,22 @@ https://github.com/edgebr/templates-artefatos
 [descrição breve]
 https://github.com/edgebr/templates-artefatos -->
 
-<!-- ## Stakeholders
+## Stakeholders
 
-Stakeholder 1 <br />
-*Key User - Cargo na Empresa X* <br />
-*E-mail* <br />
-(xx) xxxxx-xxxx
+**1. Órgãos Públicos**  
+Inclui prefeituras, secretarias de acessibilidade e outros departamentos governamentais responsáveis pela implementação e fiscalização de políticas de acessibilidade.
 
-Stakeholder 2 <br />
-*Key User - Cargo na Empresa X* <br />
-*E-mail* <br />
-(xx) xxxxx-xxxx -->
+**2. Comunidade**  
+Abrange pessoas com deficiência, suas famílias e aliados, bem como a população em geral, que se beneficiam de um ambiente inclusivo e acessível.
+
+**3. Organizações Não Governamentais (ONGs) e Grupos de Defesa**  
+Engloba ONGs e movimentos sociais que promovem e defendem os direitos das pessoas com deficiência, atuando como agentes de mudança e fiscalização social.
+
+**4. Empresas e Estabelecimentos Comerciais**  
+Negócios que precisam garantir a acessibilidade em suas instalações, produtos e serviços para atender a legislação e promover inclusão.
+
+**5. Mídia e Imprensa**  
+Representa os meios de comunicação, tanto locais quanto nacionais, responsáveis por divulgar, conscientizar e influenciar a opinião pública sobre acessibilidade e inclusão.
 
 ## Equipe
 
