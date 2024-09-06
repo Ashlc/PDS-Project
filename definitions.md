@@ -1,6 +1,6 @@
 # Projeto
 
-Para pessoas com deficiência e mobilidade reduzida, cujo problema é a falta de acessibilidade em locais públicos e privados, o `[projeto]` é um aplicativo de denúncia e mapeamento de acessibilidade que, que diferentemente do atendimento burocrático presencial ou telefônico do Ministério Público, o nosso produto oferece uma interface amigável, acessível e descomplicada para todos.
+Para pessoas com deficiência e mobilidade reduzida, cujo problema é a falta de acessibilidade em locais públicos e privados, o Andarilho é um sistema de denúncia e mapeamento de acessibilidade, que diferentemente do atendimento burocrático presencial ou telefônico do Ministério Público, o nosso produto oferece uma interface amigável, acessível e descomplicada para todos.
 
 ### Problemas
 
@@ -157,7 +157,37 @@ Definimos que o problema que o nosso projeto tratará será a falta de uma ferra
    * Monitorar possíveis alterações na legislação que podem afetar o projeto;
    * Adaptar rapidamente a plataforma em caso de novas regulamentações.
 
+## Funcionalidades
 
+### Funcionalidades do Sistema Andarilho
+
+1. **Registro de Denúncias**  
+   - Permite que usuários registrem denúncias de problemas de acessibilidade em locais públicos e privados.
+   - Interface acessível e intuitiva para facilitar o registro por pessoas com diferentes tipos de deficiência.
+
+2. **Geolocalização e Mapeamento**  
+   - Funcionalidade para localizar e mapear os pontos denunciados.
+   - Integração com mapas para exibir a localização das denúncias e identificar áreas críticas.
+
+3. **Sistema de Acompanhamento de Denúncias**  
+   - Permite que usuários acompanhem o status de suas denúncias.
+   - Notificações e atualizações sobre o andamento das ações tomadas em resposta às denúncias.
+
+4. **Interface de Feedback e Sugestões**  
+   - Canal para usuários fornecerem feedback sobre a plataforma e sugerirem melhorias.
+   - Realização de pesquisas de satisfação para entender a experiência do usuário.
+
+5. **Transparência e Relatórios Públicos**  
+   - Disponibiliza informações sobre as denúncias pendentes e as respostas dos órgãos responsáveis.
+   - Relatórios e estatísticas sobre o status das denúncias e ações corretivas.
+
+6. **Parcerias e Conscientização**  
+   - Ferramentas para colaborar com ONGs e grupos de defesa dos direitos das pessoas com deficiência
+   - Campanhas de conscientização sobre a importância da acessibilidade e da denúncia de infrações.
+
+7. **Acessibilidade da Plataforma**  
+   - Garantir que a plataforma seja acessível para pessoas com diferentes tipos de deficiência.
+   - Implementar funcionalidades específicas como leitores de tela, navegação por teclado e design responsivo.
 <!--
 
 #### Funcionalidades
@@ -252,3 +282,5 @@ https://github.com/cedugalvao
 <!-- ## Status Reports
 
 [Status Report 1 (20/12/2022)](status_report_1.md) -->
+
+
