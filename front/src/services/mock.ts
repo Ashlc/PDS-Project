@@ -10,15 +10,6 @@ interface Report {
   complement?: string;
 }
 
-interface MyReport {
-  id: number;
-  location: LatLngExpression;
-  type: 'wheelchair' | 'blind';
-  resource: string;
-  status: 'pending' | 'evaluating' | 'ongoing' | 'finished';
-  date: string;
-}
-
 export const reports: Report[] = [
   {
     id: 1,
@@ -91,72 +82,5 @@ export const reports: Report[] = [
     resource: 'Corrimão',
     address: 'Rua da Escola, 1819',
     complement: 'Próximo à escola',
-  },
-];
-
-export const myReports: MyReport[] = [
-  {
-    id: 1,
-    location: [-9.648927, -35.706977],
-    type: 'wheelchair',
-    status: 'pending',
-    resource: 'Rampa de acesso',
-    date: '2021-09-01',
-  },
-  {
-    id: 2,
-    location: [-9.651206, -35.71166],
-    type: 'blind',
-    status: 'pending',
-    resource: 'Sinalização sonora',
-    date: '2021-09-02',
-  },
-  {
-    id: 3,
-    location: [-9.647589, -35.723387],
-    type: 'wheelchair',
-    status: 'evaluating',
-    resource: 'Elevador',
-    date: '2021-09-03',
-  },
-  {
-    id: 4,
-    location: [-9.652607, -35.722019],
-    type: 'blind',
-    status: 'evaluating',
-    resource: 'Corrimão',
-    date: '2021-09-04',
-  },
-  {
-    id: 5,
-    location: [-9.660037, -35.699129],
-    type: 'wheelchair',
-    status: 'ongoing',
-    resource: 'Rampa de acesso',
-    date: '2021-09-05',
-  },
-  {
-    id: 6,
-    location: [-9.651566, -35.709268],
-    type: 'blind',
-    status: 'ongoing',
-    resource: 'Sinalização sonora',
-    date: '2021-09-06',
-  },
-  {
-    id: 7,
-    location: [-9.668277, -35.727754],
-    type: 'wheelchair',
-    status: 'finished',
-    resource: 'Elevador',
-    date: '2021-09-07',
-  },
-  {
-    id: 8,
-    location: [-9.660593, -35.710577],
-    type: 'blind',
-    status: 'finished',
-    resource: 'Corrimão',
-    date: '2021-09-08',
   },
 ];
