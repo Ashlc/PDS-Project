@@ -29,7 +29,10 @@ const Index = () => {
   const mapRef = useRef<Map>(null);
 
   const navigateToReport = () => {
-    console.log('navigate to report');
+    navigate('/reporte');
+  };
+  const navigateToMyReports = () => {
+    navigate('/meus-reportes');
   };
 
   const triggerLocation = () => {
@@ -115,7 +118,21 @@ const Index = () => {
             className="rounded-full aspect-square bg-background text-black border-2 border-border shadow-sm"
             size="icon"
           >
-            <MdMenu />
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <MdMenu />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="m-5">
+                <DropdownMenuItem>
+                  <Button variant="ghost" onClick={navigateToMyReports}>
+                    Meus reportes
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Button variant="ghost">Minha conta</Button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </Button>
           <Button
             className="w-fit gap-2 px-8 py-6 items-center border-2 border-border shadow-sm rounded-full"
