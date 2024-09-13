@@ -5,9 +5,8 @@ import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-type Props = {};
 
-const Index = (props: Props) => {
+const Index = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const onSubmit = (data: unknown) => {

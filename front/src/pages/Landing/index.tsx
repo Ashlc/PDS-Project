@@ -12,9 +12,7 @@ import {
 import { Separator } from '@components/ui/separator';
 import { useNavigate } from 'react-router-dom';
 
-type Props = {};
-
-const Index = (props: Props) => {
+const Index = () => {
   const navigate = useNavigate();
   return (
     <Column className="w-full min-h-screen">
