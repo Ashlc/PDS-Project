@@ -1,4 +1,5 @@
 import { markers } from '@assets/markers/markers';
+import Column from '@components/Column';
 import Search from '@components/Search';
 import { Button } from '@components/ui/button';
 import {
@@ -8,26 +9,23 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { useGeolocation } from '@hooks/useGeolocation';
+import { reports } from '@services/mock';
 import { maptilerKey } from '@utils/environment';
 import { Map } from 'leaflet';
 import { useEffect, useRef } from 'react';
-import { MdNotAccessible } from 'react-icons/md';
+import { MdMenu, MdNotAccessible } from 'react-icons/md';
 import {
   RiEyeOffFill,
   RiFilter2Fill,
   RiFocus3Line,
   RiMegaphoneFill,
 } from 'react-icons/ri';
-import {
-  CircleMarker,
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-} from 'react-leaflet';
+import { CircleMarker, MapContainer, Marker, TileLayer } from 'react-leaflet';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
   const { location, getLocation } = useGeolocation();
+  const navigate = useNavigate();
   const mapRef = useRef<Map>(null);
 
   const navigateToReport = () => {
@@ -44,9 +42,13 @@ const Index = () => {
     }
   }, [location]);
 
+  const openReport = (id: number) => {
+    navigate(`/reporte/${id}`);
+  };
+
   return (
-    <div className="flex flex-col justify-between h-full w-full relative">
-      <div className="flex flex-col gap-2 fixed top-10 left-8 right-8 z-10">
+    <Column className="justify-between h-full w-full relative">
+      <Column className="gap-2 fixed top-10 left-8 right-8 z-10">
         <div className="w-full items-center justify-center flex flex-row gap-2">
           <Search />
           <DropdownMenu>
@@ -68,7 +70,7 @@ const Index = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </div>
+      </Column>
       <div className="fixed top-0 left-0 h-screen w-screen overflow-clip bg-blue-400">
         <MapContainer
           ref={mapRef}
@@ -85,41 +87,46 @@ const Index = () => {
             pathOptions={{ color: 'black' }}
             radius={10}
           />
-          <Marker position={[-9.648927, -35.706977]} icon={markers.wheelchair}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
-          <Marker position={[-9.651206, -35.71166]} icon={markers.blind}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
+          {reports.map((report) => (
+            <Marker
+              key={report.id}
+              position={report.location}
+              icon={markers[report.type][report.status]}
+              eventHandlers={{
+                click: () => openReport(report.id),
+              }}
+            />
+          ))}
         </MapContainer>
       </div>
       <div className="fixed bottom-10 left-8 right-8 flex flex-col gap-10 z-10">
-        <div className=" flex flex-row justify-end rounded-full">
+        <div className="flex flex-row justify-end rounded-full">
           <Button
             variant={'outline'}
             size={'icon'}
-            className="border border-border rounded-full"
+            className="border-2 border-border rounded-full"
             onClick={triggerLocation}
           >
             <RiFocus3Line size={20} />
           </Button>
         </div>
-        <div className="flex flex-row gap-2 bg-background items-center border border-border rounded-full px-5 py-3 relative">
-          <div className="text-sm">Reportar acessibilidade</div>
+        <div className="flex flex-row items-center justify-between">
           <Button
+            className="rounded-full aspect-square bg-background text-black border-2 border-border shadow-sm"
             size="icon"
-            className="absolute backdrop-blur-lg right-0 rounded-full aspect-square w-14 h-14 -rotate-45 hover:-rotate-12 transition-transform"
+          >
+            <MdMenu />
+          </Button>
+          <Button
+            className="w-fit gap-2 px-8 py-6 items-center border-2 border-border shadow-sm rounded-full"
             onClick={navigateToReport}
           >
-            <RiMegaphoneFill size={20} />
+            <p>Novo reporte</p>
+            <RiMegaphoneFill size={21} />
           </Button>
         </div>
       </div>
-    </div>
+    </Column>
   );
 };
 

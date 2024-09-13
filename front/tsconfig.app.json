@@ -15,6 +15,7 @@
       "@services/*": ["services/*"],
       "@hooks/*": ["hooks/*"],
       "@assets/*": ["assets/*"],
+      "@layouts/*": ["layouts/*"],
     },
 
     /* Bundler mode */

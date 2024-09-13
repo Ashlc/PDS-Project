@@ -11,6 +11,7 @@ import {
 } from '@components/ui/select';
 import { Textarea } from '@components/ui/textarea';
 import { reverseGeocode } from '@services/nominatim';
+import { center } from '@utils/center';
 import { maptilerKey } from '@utils/environment';
 import { getLocation } from '@utils/getLocation';
 import { Map } from 'leaflet';
@@ -26,7 +27,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const Index = () => {
-  const center = [-9.66498, -35.70994] as [number, number];
   const [location, setLocation] = useState<[number, number]>(center);
   const [address, setAddress] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -116,7 +116,7 @@ const Index = () => {
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mx-4 flex flex-col space-y-6 pb-5"
+        className="w-full p-4 flex flex-col gap-8 pb-8"
       >
         <div className="grid items-center gap-2">
           <Label htmlFor="localização">Localização</Label>
