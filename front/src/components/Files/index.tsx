@@ -1,3 +1,4 @@
+import Row from '@components/Row';
 import { Button } from '@components/ui/button';
 import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { useState } from 'react';
@@ -36,7 +37,7 @@ const Index = ({ setImages }: Props) => {
         </label>
         <ScrollArea className="w-full h-20">
           {' '}
-          <div className="flex flex-row space-x-2">
+          <Row className="gap-2">
             {selectedImages.map((image, index) => (
               <div key={index} className="relative flex-shrink-0">
                 <img
@@ -56,7 +57,7 @@ const Index = ({ setImages }: Props) => {
                 </Button>
               </div>
             ))}
-          </div>
+          </Row>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
       </div>

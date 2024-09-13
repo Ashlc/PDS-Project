@@ -1,4 +1,5 @@
 import Files from '@components/Files';
+import Row from '@components/Row';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
@@ -86,12 +87,12 @@ const Index = () => {
 
   return (
     <div className="flex flex-col gap-5 min-h-full w-full">
-      <div className="flex flex-row w-full px-4 justify-between items-center font-semibold">
+      <Row className="w-full px-4 justify-between items-center font-semibold">
         <Button variant="ghost" size="icon" onClick={goHome}>
           <RiArrowDropLeftLine size={24} />
         </Button>
         <h2>REPORTAR ACESSIBILIDADE</h2>
-      </div>
+      </Row>
       <div className="border-t border-b border-border h-[160px] bg-blue-400">
         <MapContainer
           ref={mapRef}
@@ -120,7 +121,7 @@ const Index = () => {
       >
         <div className="grid items-center gap-2">
           <Label htmlFor="localização">Localização</Label>
-          <div className="flex flex-row gap-4 items-center h-fit">
+          <Row className="gap-4 items-center h-fit">
             <Controller
               name="address"
               control={control}
@@ -145,7 +146,7 @@ const Index = () => {
             >
               <RiFocus3Line />
             </Button>
-          </div>
+          </Row>
         </div>
         <div className="grid items-center gap-2">
           <Label htmlFor="complemento">Complemento</Label>
@@ -198,11 +199,11 @@ const Index = () => {
             </div>
           )}
         />
-        <div className=" flex justify-center flex-row">
+        <Row className=" flex justify-center">
           <Button variant={'default'} className="w-full" type="submit">
             ENVIAR DENÚNCIA
           </Button>
-        </div>
+        </Row>
       </form>
     </div>
   );

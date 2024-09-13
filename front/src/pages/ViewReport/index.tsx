@@ -1,6 +1,7 @@
 import { markers } from '@assets/markers/markers';
 import Column from '@components/Column';
 import ReportType from '@components/ReportType';
+import Row from '@components/Row';
 import StatusTag from '@components/StatusTag';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
@@ -38,12 +39,12 @@ export function Index() {
 
   return (
     <div className="h-screen flex flex-col gap-5">
-      <div className="flex flex-row w-full px-4 justify-between items-center font-semibold">
+      <Row className="w-full px-4 justify-between items-center font-semibold">
         <Button variant="ghost" size="icon" onClick={goHome}>
           <RiArrowDropLeftLine size={24} />
         </Button>
         <h2>REPORTE</h2>
-      </div>
+      </Row>
       <div className="relative border-t border-b border-border h-[160px] w-full bg-blue-400">
         <MapContainer
           ref={mapRef}
@@ -86,7 +87,7 @@ export function Index() {
         </div>
       </div>
       <Column className="px-4 pt-4 pb-8 gap-8">
-        <div className="flex items-center flex-row gap-4 w-full">
+        <Row className="items-center gap-4 w-full">
           <ReportType type={reportData?.type} />
           <Column>
             <div className="text-sm text-muted-foreground">
@@ -94,7 +95,7 @@ export function Index() {
             </div>
             <div className=" text-base font-medium">{reportData?.resource}</div>
           </Column>
-        </div>
+        </Row>
         <Column className="gap-2">
           <Label htmlFor="fotos" className=" text-muted-foreground">
             Fotos

@@ -2,6 +2,7 @@ import { LatLngExpression } from 'leaflet';
 
 interface Report {
   id: number;
+  processNumber?: string;
   location: LatLngExpression;
   type: 'wheelchair' | 'blind';
   resource: string;
@@ -50,6 +51,7 @@ export const reports: Report[] = [
   {
     id: 5,
     location: [-9.660037, -35.699129],
+    processNumber: '123456',
     type: 'wheelchair',
     status: 'ongoing',
     resource: 'Rampa de acesso',
@@ -59,6 +61,7 @@ export const reports: Report[] = [
   {
     id: 6,
     location: [-9.651566, -35.709268],
+    processNumber: '789101',
     type: 'blind',
     status: 'ongoing',
     resource: 'Sinalização sonora',
@@ -68,6 +71,7 @@ export const reports: Report[] = [
   {
     id: 7,
     location: [-9.668277, -35.727754],
+    processNumber: '111213',
     type: 'wheelchair',
     status: 'finished',
     resource: 'Elevador',
@@ -77,6 +81,7 @@ export const reports: Report[] = [
   {
     id: 8,
     location: [-9.660593, -35.710577],
+    processNumber: '141516',
     type: 'blind',
     status: 'finished',
     resource: 'Corrimão',
