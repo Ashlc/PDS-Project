@@ -17,7 +17,7 @@ export const AppRoutes = createBrowserRouter([
       { path: '/reporte', element: <Report /> },
       { path: '/meus-reportes', element: <MyReports /> },
       { path: '/conta', element: <Account /> },
-    ],  
+    ],
   },
   { path: '/', element: <Landing /> },
   { path: '/login', element: <Login /> },
