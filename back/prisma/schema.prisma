@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id        Int      @id @default(autoincrement())
+    email     String   @unique
+    password  String
+    role      String
+    reports   Report[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Report {
+    id            Int      @id @default(autoincrement())
+    processNumber String   @unique
+    status        Status   @default(PENDING)
+    resource      String
+    locationId    Int
+    location      Location @relation(fields: [locationId], references: [id])
+    description   String
+    photos        String[]
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    userId        Int
+    user          User     @relation(fields: [userId], references: [id])
+}
+
+model Location {
+    id         Int      @id @unique @default(autoincrement())
+    address    String
+    complement String?
+    reports    Report[]
+    latitude   Float
+    longitude  Float
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+}
+
+enum Status {
+    PENDING
+    IN_REVIEW
+    IN_PROGRESS
+    RESOLVED
+}
