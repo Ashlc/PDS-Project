@@ -40,16 +40,16 @@ export default function Index() {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader className="text-left">
-                <DialogTitle>APAGAR CONTA?</DialogTitle>
-                <DialogDescription>
-                  Você tem certeza que deseja apagar sua conta? Essa ação é
-                  irreversível.
-                </DialogDescription>
-                <DialogDescription className=" flex flex-row justify-around">
-                  <Button variant={'destructive'}>SIM</Button>
-                  <Button variant={'default'}>NÃO</Button>
-                </DialogDescription>
+                <DialogTitle className="text-red-500 font-medium">APAGAR CONTA?</DialogTitle>
               </DialogHeader>
+              <DialogDescription>
+                Você tem certeza que deseja apagar sua conta? Essa ação é
+                irreversível.
+              </DialogDescription>
+              <DialogDescription className="flex flex-row justify-around pt-3">
+                <Button variant={'destructive'}>SIM</Button>
+                <Button variant={'default'}>NÃO</Button>
+              </DialogDescription>
             </DialogContent>
           </Dialog>
         </Column>
