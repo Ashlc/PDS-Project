@@ -1,41 +1,51 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const User = prisma.user;
 
 function authenticationHandler(allowedRoles = []) {
-  return async (req, res, next) => {
-    const { authorization } = req.headers;
+    return async (req, res, next) => {
+        const { authorization } = req.headers;
 
-    if (!authorization) {
-      return res.status(401).json({ message: 'You must be logged to access.' });
-    }
+        if (!authorization) {
+            return res
+                .status(401)
+                .json({ message: "You must be logged to access." });
+        }
 
-    const [, token] = authorization.split(' ');
+        const [, token] = authorization.split(" ");
 
-    try {
-      const { id, name } = jwt.verify(token, process.env.JWT_SECRET);
+        try {
+            const { id, name } = jwt.verify(token, process.env.JWT_SECRET);
 
-      const user = await User.findUnique({ where: { id }, select: { role: true } });
+            const user = await User.findUnique({
+                where: { id },
+                select: { role: true },
+            });
 
-      if (!user) {
-        return res.status(401).json({ message: 'Invalid token.' });
-      }
+            if (!user) {
+                return res.status(401).json({ message: "Invalid token." });
+            }
 
-      const userRole = user.role;
+            const userRole = user.role;
 
-      if (allowedRoles.includes(userRole)) {
-        req.userId = id;
-        req.name = name;
-        req.userRole = userRole;
-        return next;
-      } else {
-        return res.status(403).json({ message: 'Token expired or invalid' });
-      }
-    } catch (error) {}
-  };
+            if (allowedRoles.includes(userRole)) {
+                req.userId = id;
+                req.name = name;
+                req.userRole = userRole;
+                return next();
+            }
+            return res
+                .status(403)
+                .json({ message: "Token expired or invalid" });
+        } catch (error) {
+            return res
+                .status(500)
+                .json({ message: "Internal server error", error });
+        }
+    };
 }
 
 module.exports = authenticationHandler;
