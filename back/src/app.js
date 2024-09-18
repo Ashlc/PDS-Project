@@ -27,6 +27,7 @@ const locationRouter = require("./api/routes/locationRouter");
 const reportRouter = require("./api/routes/reportRouter");
 const authRouter = require("./api/routes/authRouter");
 
+
 app.use("/user", userRouter);
 app.use("/location", locationRouter);
 app.use("/report", reportRouter);
