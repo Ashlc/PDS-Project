@@ -5,13 +5,35 @@ import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { post } from '@services/api';
+import { toast } from 'sonner';
+
+interface ApiError {
+  response: {
+    data: {
+      message: string;
+    };
+  };
+}
 
 const Index = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data: unknown) => {
-    console.log(data);
-    navigate('/home');
+
+  const onSubmit = async (data: Record<string, unknown>) => {
+    try {
+      const res = await post({
+        path: '/auth/login',
+        data,
+      });
+      console.clear();
+      localStorage.setItem('token', res.data.token);
+      toast.success('Login efetuado com sucesso!');
+      navigate('/home');
+    } catch (error: unknown) {
+      const e = error as ApiError;
+      toast.error(`${e.response.data.message}`);
+    }
   };
   return (
     <Column className="w-full h-screen flex flex-col items-center justify-center">
