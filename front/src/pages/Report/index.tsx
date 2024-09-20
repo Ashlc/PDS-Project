@@ -27,6 +27,29 @@ import { CircleMarker, MapContainer, TileLayer } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
+interface ApiError {
+  response: {
+    data: {
+      message: string;
+    };
+  };
+}
+
+interface ILocation {
+  address: string;
+  complement: string;
+  lat: number;
+  long: number;
+}
+
+interface IReport {
+  resource: string;
+  description: string;
+  photos: File[];
+  locationId: number;
+  userId: number;
+}
+
 const Index = () => {
   const [location, setLocation] = useState<[number, number]>(center);
   const [address, setAddress] = useState<string>('');
@@ -76,13 +99,75 @@ const Index = () => {
     }
   };
 
-  const onSubmit = (data: unknown) => {
-    data.address = address;
+  const createAdress = async (address: string, complement: string) => {
+    const data = {
+      address: address,
+      complement: complement,
+      latitude: location[0],
+      longitude: location[1],
+    };
+
+    try {
+      const res = await post({
+        path: '/location',
+        data,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      return res.data.id;
+    } catch (error: unknown) {
+      const e = error as ApiError;
+      toast.error(`${e.response.data.message}`);
+    }
+  };
+
+  const createReport = async (
+    resource: string,
+    description: string,
+    images: File[],
+    locationId: number,
+  ) => {
+    const data = {
+      resource: resource,
+      description: description,
+      photos: images,
+      locationId: locationId,
+      userId: localStorage.getItem('userId'),
+      status: 'PENDING',
+    };
+
+    try {
+      const res = await post({
+        path: '/report',
+        data,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      console.log(res);
+      toast.success(res.data.message);
+    } catch (error: unknown) {
+      const e = error as ApiError;
+      toast.error(`${e.response.data.message}`);
+    }
+  };
+
+  const onSubmit = async (data: unknown) => {
+    const { address, complement } = data as ILocation;
+
+    const adressId = await createAdress(address, complement);
+
+    const { resource, description, photos } = data as IReport;
+
+    await createReport(resource, description, photos, adressId);
+
     console.log(data);
     toast('Seu relatório foi enviado com sucesso.', {
       description: 'Obrigado por contribuir com a acessibilidade!',
     });
-    goHome();
+    // goHome();
   };
 
   return (
@@ -162,7 +247,7 @@ const Index = () => {
             Selecione o(s) recurso(s) não encontrado(s) ou com defeito(s)
           </div>
           <Controller
-            name="type"
+            name="resource"
             control={control}
             render={({ field }) => (
               <Select
@@ -176,7 +261,7 @@ const Index = () => {
                   <SelectValue placeholder="Selecione o(s) recurso(s)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="rampa">Rampa de acesso</SelectItem>
+                  <SelectItem value="RAMP">Rampa de acesso</SelectItem>
                   <SelectItem value="elevador">Elevador</SelectItem>
                   <SelectItem value="corrimão">Corrimão</SelectItem>
                   <SelectItem value="sonora">Sinalização sonora</SelectItem>
@@ -187,7 +272,11 @@ const Index = () => {
         </div>
         <div className="grid items-center gap-2">
           <Label htmlFor="observações">Observações</Label>
-          <Textarea placeholder="Digite aqui" {...register} />
+          <Textarea
+            id="description"
+            placeholder="Digite aqui"
+            {...register('description')}
+          />
         </div>
         <Controller
           name="images"
