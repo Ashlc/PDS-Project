@@ -28,6 +28,7 @@ const Index = () => {
       });
       console.clear();
       localStorage.setItem('token', res.data.token);
+      localStorage.setItem('userId', res.data.id);
       toast.success('Login efetuado com sucesso!');
       navigate('/home');
     } catch (error: unknown) {
