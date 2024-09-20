@@ -2,6 +2,21 @@ const reportService = require("../services/reportService");
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+function generateUniqueProcessNumber() {
+    let processNumber;
+    do {
+        processNumber = Math.floor(100000000 + Math.random() * 900000000).toString();
+    } while (!isUnique(processNumber));
+
+    return processNumber;
+}
+
+async function isUnique(processNumber) {
+    const existingReport = await prisma.report.findUnique({
+        where: { processNumber },
+    });
+    return !existingReport; 
+}
 
 class ReportController {
     async getAllReports(req, res) {
@@ -28,7 +43,6 @@ class ReportController {
 
     async createReport(req, res) {
         const {
-            processNumber,
             status,
             resource,
             locationId,
@@ -36,6 +50,9 @@ class ReportController {
             photos,
             userId,
         } = req.body;
+
+        const processNumber = generateUniqueProcessNumber();
+
         try {
             const newReport = await reportService.createReport({
                 processNumber,
