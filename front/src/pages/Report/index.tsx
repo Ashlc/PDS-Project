@@ -26,6 +26,7 @@ import {
 import { CircleMarker, MapContainer, TileLayer } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { post } from '@services/api';
 
 interface ApiError {
   response: {
