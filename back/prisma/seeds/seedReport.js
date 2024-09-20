@@ -7,7 +7,6 @@ async function seedReport() {
         where: { processNumber: "0123456789" },
         update: {},
         create: {
-            processNumber: "0123456789",
             status: "PENDING",
             resource: "RAMP",
             description: "Rampa inacessível",
