@@ -17,7 +17,6 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Separator } from '@components/ui/separator';
-import { reports } from '@services/mock';
 import { center } from '@utils/center';
 import { maptilerKey } from '@utils/environment';
 import { Map } from 'leaflet';
