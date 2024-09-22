@@ -148,6 +148,9 @@ const Index = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
+      toast('Seu relatório foi enviado com sucesso.', {
+        description: 'Obrigado por contribuir com a acessibilidade!',
+      });
       goHome();
     } catch (error: unknown) {
       const e = error as ApiError;
@@ -163,10 +166,6 @@ const Index = () => {
     const { resource, description, photos } = data as IReport;
 
     await createReport(resource, description, photos, adressId);
-
-    toast('Seu relatório foi enviado com sucesso.', {
-      description: 'Obrigado por contribuir com a acessibilidade!',
-    });
     // goHome();
   };
 
