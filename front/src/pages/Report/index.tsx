@@ -131,24 +131,24 @@ const Index = () => {
     locationId: number,
   ) => {
     const data = {
+      processNumber: '',
       resource: resource,
       description: description,
       photos: images,
-      locationId: locationId,
-      userId: localStorage.getItem('userId'),
+      locationId: Number(locationId),
+      userId: Number(localStorage.getItem('userId')),
       status: 'PENDING',
     };
 
     try {
-      const res = await post({
+      await post({
         path: '/report',
         data,
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      console.log(res);
-      toast.success(res.data.message);
+      goHome();
     } catch (error: unknown) {
       const e = error as ApiError;
       toast.error(`${e.response.data.message}`);
@@ -164,7 +164,6 @@ const Index = () => {
 
     await createReport(resource, description, photos, adressId);
 
-    console.log(data);
     toast('Seu relatório foi enviado com sucesso.', {
       description: 'Obrigado por contribuir com a acessibilidade!',
     });
