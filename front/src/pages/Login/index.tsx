@@ -22,6 +22,7 @@ const Index = () => {
 
   const onSubmit = async (data: Record<string, unknown>) => {
     try {
+      toast.message('Fazendo login...');
       const res = await post({
         path: '/auth/login',
         data,

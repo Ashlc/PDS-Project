@@ -10,8 +10,7 @@ import './index.css';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={qc}>
-      {/* <GeolocationProvider> */}
-      <Toaster />
+      <Toaster position="bottom-center" />
       <RouterProvider router={AppRoutes} />
       {/* </GeolocationProvider> */}
     </QueryClientProvider>
