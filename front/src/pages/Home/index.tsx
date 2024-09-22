@@ -24,6 +24,8 @@ import { CircleMarker, MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import { get } from '@services/api';
 import { toast } from 'sonner';
+import { RiErrorWarningLine } from 'react-icons/ri';
+import { getLocation } from '@utils/getLocation';
 
 interface Report {
   id: number;
@@ -36,7 +38,10 @@ interface Report {
 }
 
 const Index = () => {
-  const { location, getLocation } = useGeolocation();
+  const { location } = useGeolocation();
+  const [yourLocation, setYourLocation] = useState<[number, number]>([
+    -9.648927, -35.706977,
+  ]);
   const navigate = useNavigate();
   const mapRef = useRef<Map>(null);
 
@@ -47,7 +52,34 @@ const Index = () => {
   };
 
   const triggerLocation = () => {
-    getLocation();
+    getLocationAddress();
+  };
+
+  const getLocationAddress = async () => {
+    try {
+      const currentLocation = (await getLocation()) as [number, number];
+
+      if (!currentLocation) {
+        return;
+      }
+
+      mapRef.current?.flyTo(
+        {
+          lat: currentLocation[0],
+          lng: currentLocation[1],
+        },
+        15,
+      );
+
+      setYourLocation(currentLocation);
+
+      console.clear();
+      console.log('currentLocation', currentLocation);
+      console.log('location', location);
+    } catch (error) {
+      console.error(error);
+      toast('Erro ao buscar endereço', { icon: <RiErrorWarningLine /> });
+    }
   };
 
   const getReports = async () => {
@@ -69,23 +101,23 @@ const Index = () => {
         complement: report.location.complement,
       }));
       setReports(reports);
-
     } catch (error: unknown) {
       const e = error as Error;
+      console.log(e);
+      if (e.response.data.error.message === 'jwt expired') {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        navigate('/login');
+      }
+
       toast.error(e.message);
     }
   };
 
   useEffect(() => {
     getReports();
+    getLocationAddress();
   }, []);
-
-  useEffect(() => {
-    if (location && mapRef.current) {
-      mapRef.current.flyTo(location, 15);
-    }
-  }, [location]);
-
   const openReport = (id: number) => {
     navigate(`/reporte/${id}`);
   };
@@ -118,8 +150,8 @@ const Index = () => {
       <div className="fixed top-0 left-0 h-screen w-screen overflow-clip bg-blue-400">
         <MapContainer
           ref={mapRef}
-          center={location}
-          zoom={13}
+          center={yourLocation}
+          zoom={15}
           scrollWheelZoom={true}
           zoomControl={false}
         >
@@ -127,7 +159,7 @@ const Index = () => {
             url={`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=${maptilerKey}`}
           />
           <CircleMarker
-            center={location}
+            center={yourLocation}
             pathOptions={{ color: 'black' }}
             radius={10}
           />
