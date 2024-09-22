@@ -10,10 +10,9 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { useGeolocation } from '@hooks/useGeolocation';
-import { reports } from '@services/mock';
 import { maptilerKey } from '@utils/environment';
 import { Map } from 'leaflet';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MdAccountCircle, MdMenu, MdNotAccessible } from 'react-icons/md';
 import {
   RiEyeOffFill,
@@ -23,11 +22,25 @@ import {
 } from 'react-icons/ri';
 import { CircleMarker, MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
+import { get } from '@services/api';
+import { toast } from 'sonner';
+
+interface Report {
+  id: number;
+  location: [number, number];
+  type: 'wheelchair' | 'blind';
+  status: 'pending' | 'evaluating' | 'ongoing' | 'finished';
+  resource?: string;
+  address?: string;
+  complement?: string;
+}
 
 const Index = () => {
   const { location, getLocation } = useGeolocation();
   const navigate = useNavigate();
   const mapRef = useRef<Map>(null);
+
+  const [reports, setReports] = useState<Report[]>([]);
 
   const navigateToReport = () => {
     navigate('/reporte');
@@ -36,6 +49,36 @@ const Index = () => {
   const triggerLocation = () => {
     getLocation();
   };
+
+  const getReports = async () => {
+    try {
+      const res = await get({
+        path: '/report',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      const reports = res.map((report: any) => ({
+        id: report.id,
+        location: [report.location.latitude, report.location.longitude],
+        type: 'wheelchair',
+        status: report.status.toLowerCase(),
+        resource: report.resource,
+        address: report.location.address,
+        complement: report.location.complement,
+      }));
+      setReports(reports);
+
+    } catch (error: unknown) {
+      const e = error as Error;
+      toast.error(e.message);
+    }
+  };
+
+  useEffect(() => {
+    getReports();
+  }, []);
 
   useEffect(() => {
     if (location && mapRef.current) {
@@ -92,7 +135,7 @@ const Index = () => {
             <Marker
               key={report.id}
               position={report.location}
-              icon={markers[report.type][report.status]}
+              icon={markers['wheelchair'][report.status]}
               eventHandlers={{
                 click: () => openReport(report.id),
               }}
