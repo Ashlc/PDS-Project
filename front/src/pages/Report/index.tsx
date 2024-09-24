@@ -120,7 +120,7 @@ const Index = () => {
       description: description,
       photos: images,
       locationId: Number(locationId),
-      userId: Number(localStorage.getItem('userId')),
+      userId: Number(authUser?.id),
       status: 'PENDING',
     };
 
@@ -241,8 +241,8 @@ const Index = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="wheelchair">Rampa de acesso</SelectItem>
-                  <SelectItem value="wheelchair">Elevador</SelectItem>
-                  <SelectItem value="blind">Corrimão</SelectItem>
+                  {/* <SelectItem value="wheelchair">Elevador</SelectItem> */}
+                  {/* <SelectItem value="blind">Corrimão</SelectItem> */}
                   <SelectItem value="blind">Sinalização sonora</SelectItem>
                 </SelectContent>
               </Select>

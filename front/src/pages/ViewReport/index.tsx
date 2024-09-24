@@ -22,6 +22,7 @@ import { IReport } from '@interfaces/IReport';
 import { get } from '@services/api';
 import { center } from '@utils/center';
 import { maptilerKey } from '@utils/environment';
+import { resourceTranslation } from '@utils/resourceTranslation';
 import { LatLngExpression, Map } from 'leaflet';
 import { useEffect, useRef, useState } from 'react';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
@@ -43,10 +44,10 @@ export function Index() {
 
   const getReport = async () => {
     const response = await get({
-      path: `/reports/${reportId}`,
+      path: `/report/${reportId}`,
       token,
     });
-
+    console.log(response);
     setReportData(response as unknown as IReport);
   };
 
@@ -87,7 +88,7 @@ export function Index() {
           {reportData && (
             <Marker
               position={getLatLng()}
-              icon={markers[reportData.type][reportData.status]}
+              icon={markers[reportData.resource][reportData.status]}
             ></Marker>
           )}
         </MapContainer>
@@ -95,7 +96,7 @@ export function Index() {
           {reportData && (
             <Popover>
               <PopoverTrigger>
-                <StatusTag status={reportData.status} />
+                <StatusTag status={reportData.status} className="mb-2" />
               </PopoverTrigger>
               <PopoverContent>
                 <div className="flex flex-col space-y-2">
@@ -114,43 +115,47 @@ export function Index() {
       </div>
       <Column className="px-4 pt-4 pb-8 gap-8">
         <Row className="items-center gap-4 w-full">
-          <ReportType type={reportData?.type} />
+          <ReportType type={reportData?.resource} />
           <Column>
             <div className="text-sm text-muted-foreground">
               Recurso não encontrado ou com defeito
             </div>
-            <div className=" text-base font-medium">{reportData?.resource}</div>
+            <div className=" text-base font-medium">
+              {resourceTranslation[reportData?.resource]}
+            </div>
           </Column>
         </Row>
-        <Column className="gap-2">
-          <Label htmlFor="fotos" className=" text-muted-foreground">
-            Fotos
-          </Label>
-          <Carousel>
-            <CarouselContent>
-              <CarouselItem className="basis-1/3">
-                <Card>
-                  <div className="py-14 text-center">Foto 1</div>
-                </Card>
-              </CarouselItem>
-              <CarouselItem className="basis-1/3">
-                <Card>
-                  <div className="py-14 text-center">Foto 2</div>
-                </Card>
-              </CarouselItem>
-              <CarouselItem className="basis-1/3">
-                <Card>
-                  <div className="py-14 text-center">Foto 3</div>
-                </Card>
-              </CarouselItem>
-              <CarouselItem className="basis-1/3">
-                <Card>
-                  <div className="py-14 text-center">Foto 4</div>
-                </Card>
-              </CarouselItem>
-            </CarouselContent>
-          </Carousel>
-        </Column>
+        {reportData?.photos && reportData?.photos.length > 0 && (
+          <Column className="gap-2">
+            <Label htmlFor="fotos" className=" text-muted-foreground">
+              Fotos
+            </Label>
+            <Carousel>
+              <CarouselContent>
+                <CarouselItem className="basis-1/3">
+                  <Card>
+                    <div className="py-14 text-center">Foto 1</div>
+                  </Card>
+                </CarouselItem>
+                <CarouselItem className="basis-1/3">
+                  <Card>
+                    <div className="py-14 text-center">Foto 2</div>
+                  </Card>
+                </CarouselItem>
+                <CarouselItem className="basis-1/3">
+                  <Card>
+                    <div className="py-14 text-center">Foto 3</div>
+                  </Card>
+                </CarouselItem>
+                <CarouselItem className="basis-1/3">
+                  <Card>
+                    <div className="py-14 text-center">Foto 4</div>
+                  </Card>
+                </CarouselItem>
+              </CarouselContent>
+            </Carousel>
+          </Column>
+        )}
         <Column className="gap-2">
           <Label htmlFor="local" className=" text-muted-foreground">
             Local
