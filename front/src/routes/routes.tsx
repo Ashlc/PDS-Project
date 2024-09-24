@@ -4,6 +4,7 @@ import Landing from '@pages/Landing';
 import Login from '@pages/Login';
 import MyReports from '@pages/MyReports';
 import Report from '@pages/Report';
+import SignUp from '@pages/SignUp';
 import ViewReport from '@pages/ViewReport';
 import { createBrowserRouter } from 'react-router-dom';
 import PrivateLayout from '../layouts/PrivateLayout';
@@ -21,6 +22,7 @@ export const AppRoutes = createBrowserRouter([
   },
   { path: '/', element: <Landing /> },
   { path: '/login', element: <Login /> },
+  { path: '/cadastro', element: <SignUp /> },
 ]);
 
 export default AppRoutes;

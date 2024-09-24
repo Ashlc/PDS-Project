@@ -51,9 +51,9 @@ const Index = () => {
     <Column className="w-full h-screen flex flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-6 items-center w-10/12 p-8"
+        className="flex flex-col gap-6 items-center w-10/12 sm:w-64 md:w-80 p-8"
       >
-        <img src={logo} className="w-3/4 my-4" alt="Logo Andarilho" />
+        <img src={logo} className="w-2/3 sm:w-48 my-4" alt="Logo Andarilho" />
         <Column className="gap-4 w-full">
           <Column className="gap-2 w-full">
             <Label htmlFor="email">Email</Label>
