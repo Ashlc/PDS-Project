@@ -15,6 +15,7 @@ const Index = ({ setImages }: Props) => {
     const files = event.target.files;
     if (files) {
       setSelectedImages((prevImages) => [...prevImages, ...Array.from(files)]);
+      setImages((prevImages) => [...prevImages, ...Array.from(files)]);
     }
   };
 

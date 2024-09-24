@@ -18,7 +18,7 @@ import {
 } from '@components/ui/popover';
 import { Separator } from '@components/ui/separator';
 import { IAuthUser } from '@interfaces/IAuthUser';
-import { Report } from '@interfaces/IReport';
+import { IReport } from '@interfaces/IReport';
 import { get } from '@services/api';
 import { center } from '@utils/center';
 import { maptilerKey } from '@utils/environment';
@@ -35,7 +35,7 @@ export function Index() {
   const token = authUser?.token;
   const mapRef = useRef<Map>(null);
   const reportId = window.location.pathname.split('/').pop();
-  const [reportData, setReportData] = useState<Report | null>(null);
+  const [reportData, setReportData] = useState<IReport | null>(null);
 
   const goHome = () => {
     navigate('/home');
@@ -47,7 +47,7 @@ export function Index() {
       token,
     });
 
-    setReportData(response as unknown as Report);
+    setReportData(response as unknown as IReport);
   };
 
   const getLatLng = (): LatLngExpression => {

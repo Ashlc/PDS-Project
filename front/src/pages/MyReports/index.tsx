@@ -5,7 +5,7 @@ import Search from '@components/Search';
 import StatusTag from '@components/StatusTag';
 import { Button } from '@components/ui/button';
 import { IAuthUser } from '@interfaces/IAuthUser';
-import { Report } from '@interfaces/IReport';
+import { IReport } from '@interfaces/IReport';
 import { get } from '@services/api';
 import { useEffect, useState } from 'react';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Index() {
   const navigate = useNavigate();
-  const [reports, setReports] = useState<Report[]>([]);
+  const [reports, setReports] = useState<IReport[]>([]);
   const authUser = useAuthUser<IAuthUser>();
   const token = authUser?.token;
   const goHome = () => {
@@ -36,7 +36,7 @@ export default function Index() {
       token,
     });
     console.log(response);
-    setReports(response as unknown as Report[]);
+    setReports(response as unknown as IReport[]);
   };
 
   useEffect(() => {

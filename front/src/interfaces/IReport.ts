@@ -6,7 +6,7 @@ export interface Address {
   longitude: number;
 }
 
-export interface Report {
+export interface IReport {
   id: number;
   processNumber?: string;
   location: Address;

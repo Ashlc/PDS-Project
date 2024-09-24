@@ -11,7 +11,7 @@ import {
 } from '@components/ui/dropdown-menu';
 import { useGeolocation } from '@hooks/useGeolocation';
 import { IAuthUser } from '@interfaces/IAuthUser';
-import { Report } from '@interfaces/IReport';
+import { IReport } from '@interfaces/IReport';
 import { get } from '@services/api';
 import { maptilerKey } from '@utils/environment';
 import { getLocation } from '@utils/getLocation';
@@ -40,7 +40,7 @@ const Index = () => {
   const navigate = useNavigate();
   const mapRef = useRef<Map>(null);
 
-  const [reports, setReports] = useState<Report[]>([]);
+  const [reports, setReports] = useState<IReport[]>([]);
 
   const navigateToReport = () => {
     navigate('/reporte');
@@ -83,7 +83,7 @@ const Index = () => {
         token,
       });
       console.log(res);
-      setReports(res as unknown as Report[]);
+      setReports(res as unknown as IReport[]);
     } catch (error: unknown) {
       const e = error as Error;
       console.log(e);
