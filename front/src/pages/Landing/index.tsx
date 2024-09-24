@@ -16,14 +16,16 @@ const Index = () => {
   const navigate = useNavigate();
   return (
     <Column className="w-full min-h-screen">
-      <Column className="p-8 gap-12">
-        <img src={logo} className="h-6 w-fit" alt="Logo Andarilho" />
+      <div className="p-4 w-full lg:border-b lg:border-black">
+        <img src={logo} className="h-5 w-fit" alt="Logo Andarilho" />
+      </div>
+      <Column className="p-8 gap-12 lg:flex-row lg:items-center lg:justify-center">
         <img
           src={illustration}
-          className="h-fit w-full object-contain"
+          className="h-fit w-full object-contain md:h-72 md:w-fit"
           alt="Ilustração de um homem cego com uma bengala atravessando a rua na faixa de pedestres."
         />
-        <Column className="gap-2">
+        <Column className="gap-2 lg:w-80">
           <h1 className="text-2xl">
             Participe da luta por uma cidade mais acessível.
             <br />
@@ -34,8 +36,8 @@ const Index = () => {
           </Button>
         </Column>
       </Column>
-      <Separator className="border border-border" />
-      <Column className="gap-12 px-8 py-12">
+      <Separator className="max-lg:border-b max-lg:border-border" />
+      <Column className="gap-12 px-8 py-12 lg:w-7/12 mx-auto">
         <h2 className="text-center font-bold uppercase">Sobre nós</h2>
         <p className="text-justify tracking-wide">
           A ausência de infraestrutura adequada não só impede o direito de ir e

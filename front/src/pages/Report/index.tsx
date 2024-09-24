@@ -229,12 +229,7 @@ const Index = () => {
             name="resource"
             control={control}
             render={({ field }) => (
-              <Select
-                {...field}
-                onValueChange={(v) => {
-                  field.onChange(v);
-                }}
-              >
+              <Select onValueChange={field.onChange}>
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione o(s) recurso(s)" />
                 </SelectTrigger>
@@ -262,7 +257,7 @@ const Index = () => {
           render={({ field }) => (
             <div className="grid items-center gap-2">
               <Label htmlFor="fotos">Fotos(opcional)</Label>
-              <Files {...field} setImages={field.onChange} />
+              <Files setImages={field.onChange} />
             </div>
           )}
         />
