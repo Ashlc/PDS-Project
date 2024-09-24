@@ -1,7 +1,5 @@
 import Column from '@components/Column';
 import { Button } from '@components/ui/button';
-import { RiArrowDropLeftLine, RiLogoutBoxRLine } from 'react-icons/ri';
-import { useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogContent,
@@ -10,12 +8,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@components/ui/dialog';
+import useSignOut from 'react-auth-kit/hooks/useSignOut';
+import { RiArrowDropLeftLine, RiLogoutBoxRLine } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
 export default function Index() {
   const navigate = useNavigate();
+  const signOut = useSignOut();
+
   const goHome = () => {
     navigate('/home');
   };
+
+  const logout = () => {
+    signOut();
+  };
+
   return (
     <>
       <Column>
@@ -26,8 +34,11 @@ export default function Index() {
           <h2>CONTA E CONFIGURAÇÕES</h2>
         </div>
         <Column className="space-y-8 ml-3 mt-5 items-start">
-          <button className="font-semibold text-lg w-full items-center space-x-2 flex flex-row">
-            <div>SAIR</div>
+          <button
+            onClick={logout}
+            className="font-semibold text-lg w-full items-center space-x-2 flex flex-row"
+          >
+            <p>SAIR</p>
             <RiLogoutBoxRLine size={24} />
           </button>
           <button>ALTERAR EMAIL</button>
@@ -40,7 +51,9 @@ export default function Index() {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader className="text-left">
-                <DialogTitle className="text-red-500 font-medium">APAGAR CONTA?</DialogTitle>
+                <DialogTitle className="text-red-500 font-medium">
+                  APAGAR CONTA?
+                </DialogTitle>
               </DialogHeader>
               <DialogDescription>
                 Você tem certeza que deseja apagar sua conta? Essa ação é
