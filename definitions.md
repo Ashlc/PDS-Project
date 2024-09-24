@@ -162,6 +162,23 @@ Acreditamos que com essa apresentação vamos conseguir expor de forma clara a i
 
 Acreditamos que com essa implementação vamos conseguir produzir telas que sejam acessíveis e entendíveis ao público. Saberemos que isso aconteceu se as telas forem aprovadas pelo professor Ig Ibert.
 
+#### Funcionalidades 
+
+- [x] Implementação das telas Mobile.
+
+Prazo: 23/09/2024
+
+### Disponibilizar o projeto em ambiente de produção - 20/09/2024
+
+Acreditamos que com essa disponibilização poderemos mostrar ao professor Ig Ibert o projeto em ambiente de produção e deixar disponibilizado para futuras apresentações. Saberemos que as telas foram aprovadas a partir do feedback do professor Ig Ibert.
+
+#### Funcionalidades 
+
+- [x] Subir a API em ambiente de produção.
+- [x] Subir o Front-end em ambiente de produção.
+
+Prazo: 23/09/2024
+
 ## Riscos
 
 ### **Risco 1** : Baixa adesão dos usuários à plataforma. *Severidade Média e Probabilidade Alta*.
