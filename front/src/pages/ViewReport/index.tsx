@@ -47,7 +47,6 @@ export function Index() {
       path: `/report/${reportId}`,
       token,
     });
-    console.log(response);
     setReportData(response as unknown as IReport);
   };
 
@@ -120,9 +119,11 @@ export function Index() {
             <div className="text-sm text-muted-foreground">
               Recurso não encontrado ou com defeito
             </div>
-            <div className=" text-base font-medium">
-              {resourceTranslation[reportData?.resource]}
-            </div>
+            {reportData?.resource && (
+              <div className=" text-base font-medium">
+                {resourceTranslation[reportData?.resource]}
+              </div>
+            )}
           </Column>
         </Row>
         {reportData?.photos && reportData?.photos.length > 0 && (
