@@ -68,8 +68,6 @@ const Index = () => {
 
       setYourLocation(currentLocation);
 
-      console.log('currentLocation', currentLocation);
-      console.log('location', location);
     } catch (error) {
       console.error(error);
       toast('Erro ao buscar endereço', { icon: <RiErrorWarningLine /> });
@@ -82,11 +80,9 @@ const Index = () => {
         path: '/report',
         token,
       });
-      console.log(res);
       setReports(res as unknown as IReport[]);
     } catch (error: unknown) {
       const e = error as Error;
-      console.log(e);
       toast.error(e.message);
     }
   };

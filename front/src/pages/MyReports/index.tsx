@@ -35,7 +35,6 @@ export default function Index() {
       path: '/report',
       token,
     });
-    console.log(response);
     setReports(response as unknown as IReport[]);
   };
 

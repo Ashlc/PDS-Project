@@ -232,7 +232,6 @@ const Index = () => {
               <Select
                 {...field}
                 onValueChange={(v) => {
-                  console.log(v);
                   field.onChange(v);
                 }}
               >
