@@ -1,15 +1,26 @@
-import { Button } from '@components/ui/button';
-import { RiArrowDropLeftLine } from 'react-icons/ri';
-import { useNavigate } from 'react-router-dom';
 import Column from '@components/Column';
-import Search from '@components/Search';
-import { RiFilter2Fill, RiArrowDropRightFill } from 'react-icons/ri';
-import { myReports } from '@services/mock';
-import { Badge } from '@components/ui/badge';
 import ReportType from '@components/ReportType';
+import Row from '@components/Row';
+import Search from '@components/Search';
+import StatusTag from '@components/StatusTag';
+import { Button } from '@components/ui/button';
+import { IAuthUser } from '@interfaces/IAuthUser';
+import { Report } from '@interfaces/IReport';
+import { get } from '@services/api';
+import { useEffect, useState } from 'react';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import {
+  RiArrowDropLeftLine,
+  RiArrowDropRightFill,
+  RiFilter2Fill,
+} from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
 export default function Index() {
   const navigate = useNavigate();
+  const [reports, setReports] = useState<Report[]>([]);
+  const authUser = useAuthUser<IAuthUser>();
+  const token = authUser?.token;
   const goHome = () => {
     navigate('/home');
   };
@@ -19,7 +30,18 @@ export default function Index() {
     return `${day}/${month}/${year}`;
   };
 
-  const reports = myReports;
+  const getReports = async () => {
+    const response = await get({
+      path: '/report',
+      token,
+    });
+    console.log(response);
+    setReports(response as unknown as Report[]);
+  };
+
+  useEffect(() => {
+    getReports();
+  }, []);
 
   return (
     <>
@@ -37,43 +59,31 @@ export default function Index() {
             Filtros
           </Button>
         </div>
+        {reports.length === 0 && (
+          <p className="p-5">Nenhum reporte encontrado</p>
+        )}
         <Column>
           {reports.map((report) => (
             <div key={report.id} className="border-b border-border">
               <div className="flex flex-row py-3 px-3 items-center space-x-3">
                 <ReportType type={report.type} />
                 <Column className="w-full space-y-1">
-                  <div className="flex flex-row space-x-5 items-center">
-                    <div className="font-bold">{report.resource}</div>
-                    <Badge
-                      className={
-                        report.status === 'pending'
-                          ? 'border-red-600 bg-red-300 text-red-800'
-                          : report.status === 'evaluating'
-                            ? 'border-yellow-600 bg-yellow-200 text-yellow-800'
-                            : report.status === 'ongoing'
-                              ? 'border-purple-600 bg-purple-300 text-purple-800'
-                              : 'border-green-600 bg-green-300 text-green-800'
-                      }
-                    >
-                      <div className="font-medium p-1 px-0">
-                        {report.status === 'pending'
-                          ? 'Pendente'
-                          : report.status === 'evaluating'
-                            ? 'Análise'
-                            : report.status === 'ongoing'
-                              ? 'Andamento'
-                              : 'Resolvido'}
-                      </div>
-                    </Badge>
-                  </div>
-                  <div className="flex flex-row justify-between items-center">
-                    <div className=" text-muted-foreground text-xs">
-                      Reporte realizado em {formatDate(report.date)}
-                    </div>
-                  </div>
+                  <Row className="gap-2 items-center">
+                    <p className="font-semibold text-sm">{report.resource}</p>
+                    <StatusTag status={report.status} />
+                  </Row>
+                  {report.createdAt && (
+                    <p className="text-muted-foreground text-xs">
+                      Reporte realizado em {formatDate(report.createdAt)}
+                    </p>
+                  )}
                 </Column>
-                <Button size={'icon'} variant={'ghost'}>
+                <Button
+                  size={'icon'}
+                  variant={'ghost'}
+                  className="aspect-square"
+                  onClick={() => navigate(`/reporte/${report.id}`)}
+                >
                   <RiArrowDropRightFill size={20} />
                 </Button>
               </div>

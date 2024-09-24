@@ -11,12 +11,15 @@ import {
   SelectValue,
 } from '@components/ui/select';
 import { Textarea } from '@components/ui/textarea';
+import { IAuthUser } from '@interfaces/IAuthUser';
+import { post } from '@services/api';
 import { reverseGeocode } from '@services/nominatim';
 import { center } from '@utils/center';
 import { maptilerKey } from '@utils/environment';
 import { getLocation } from '@utils/getLocation';
 import { Map } from 'leaflet';
 import { useRef, useState } from 'react';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { Controller, useForm } from 'react-hook-form';
 import {
   RiArrowDropLeftLine,
@@ -26,15 +29,6 @@ import {
 import { CircleMarker, MapContainer, TileLayer } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { post } from '@services/api';
-
-interface ApiError {
-  response: {
-    data: {
-      message: string;
-    };
-  };
-}
 
 interface ILocation {
   address: string;
@@ -54,15 +48,12 @@ interface IReport {
 const Index = () => {
   const [location, setLocation] = useState<[number, number]>(center);
   const [address, setAddress] = useState<string>('');
+  const authUser = useAuthUser<IAuthUser>();
+  const token = authUser ? authUser.token : '';
   const [loading, setLoading] = useState<boolean>(false);
   const mapRef = useRef<Map>(null);
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, control } = useForm();
 
   const goHome = () => {
     navigate('/home');
@@ -108,20 +99,13 @@ const Index = () => {
       longitude: location[1],
     };
 
-    try {
-      const res = await post({
-        path: '/location',
-        data,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+    const res = await post({
+      path: '/location',
+      data,
+      token,
+    });
 
-      return res.data.id;
-    } catch (error: unknown) {
-      const e = error as ApiError;
-      toast.error(`${e.response.data.message}`);
-    }
+    return res.data.id;
   };
 
   const createReport = async (
@@ -140,32 +124,28 @@ const Index = () => {
       status: 'PENDING',
     };
 
-    try {
-      await post({
-        path: '/report',
-        data,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-      toast('Seu relatório foi enviado com sucesso.', {
-        description: 'Obrigado por contribuir com a acessibilidade!',
-      });
-      goHome();
-    } catch (error: unknown) {
-      const e = error as ApiError;
-      toast.error(`${e.response.data.message}`);
-    }
+    await post({
+      path: '/report',
+      data,
+      token,
+    });
+    toast('Seu relatório foi enviado com sucesso.', {
+      description: 'Obrigado por contribuir com a acessibilidade!',
+    });
+    goHome();
   };
 
   const onSubmit = async (data: unknown) => {
-    const { address, complement } = data as ILocation;
-
-    const adressId = await createAdress(address, complement);
-
-    const { resource, description, photos } = data as IReport;
-
-    await createReport(resource, description, photos, adressId);
+    const { complement } = data as ILocation;
+    try {
+      const adressId = await createAdress(address, complement);
+      const { resource, description, photos } = data as IReport;
+      await createReport(resource, description, photos, adressId);
+    } catch (error) {
+      console.error(error);
+      toast('Erro ao criar reporte', { icon: <RiErrorWarningLine /> });
+      return;
+    }
     // goHome();
   };
 
@@ -184,7 +164,7 @@ const Index = () => {
           zoom={13}
           scrollWheelZoom={true}
           zoomControl={false}
-          //@ts-ignore
+          //@ts-expect-error: Workaround for leaflet typings
           loadingControl={true}
         >
           <TileLayer
@@ -260,10 +240,10 @@ const Index = () => {
                   <SelectValue placeholder="Selecione o(s) recurso(s)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="RAMP">Rampa de acesso</SelectItem>
-                  <SelectItem value="elevador">Elevador</SelectItem>
-                  <SelectItem value="corrimão">Corrimão</SelectItem>
-                  <SelectItem value="sonora">Sinalização sonora</SelectItem>
+                  <SelectItem value="wheelchair">Rampa de acesso</SelectItem>
+                  <SelectItem value="wheelchair">Elevador</SelectItem>
+                  <SelectItem value="blind">Corrimão</SelectItem>
+                  <SelectItem value="blind">Sinalização sonora</SelectItem>
                 </SelectContent>
               </Select>
             )}
@@ -288,7 +268,12 @@ const Index = () => {
           )}
         />
         <Row className=" flex justify-center">
-          <Button variant={'default'} className="w-full" type="submit">
+          <Button
+            variant={'default'}
+            className="w-full"
+            type="submit"
+            disabled={loading}
+          >
             ENVIAR DENÚNCIA
           </Button>
         </Row>

@@ -11,7 +11,7 @@ const Index = ({ type }: Props) => {
     blind: <MdBlind size={24} />,
   };
   return (
-    <div className="w-12 rounded-lg aspect-square flex flex-col items-center justify-center bg-black text-white">
+    <div className="w-16 rounded-lg aspect-square flex flex-col items-center justify-center bg-black text-white">
       {type ? (
         reportTypes[type]
       ) : (

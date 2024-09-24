@@ -10,11 +10,17 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { useGeolocation } from '@hooks/useGeolocation';
+import { IAuthUser } from '@interfaces/IAuthUser';
+import { Report } from '@interfaces/IReport';
+import { get } from '@services/api';
 import { maptilerKey } from '@utils/environment';
+import { getLocation } from '@utils/getLocation';
 import { Map } from 'leaflet';
 import { useEffect, useRef, useState } from 'react';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { MdAccountCircle, MdMenu, MdNotAccessible } from 'react-icons/md';
 import {
+  RiErrorWarningLine,
   RiEyeOffFill,
   RiFilter2Fill,
   RiFocus3Line,
@@ -22,23 +28,12 @@ import {
 } from 'react-icons/ri';
 import { CircleMarker, MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
-import { get } from '@services/api';
 import { toast } from 'sonner';
-import { RiErrorWarningLine } from 'react-icons/ri';
-import { getLocation } from '@utils/getLocation';
-
-interface Report {
-  id: number;
-  location: [number, number];
-  type: 'wheelchair' | 'blind';
-  status: 'pending' | 'evaluating' | 'ongoing' | 'finished';
-  resource?: string;
-  address?: string;
-  complement?: string;
-}
 
 const Index = () => {
   const { location } = useGeolocation();
+  const authUser = useAuthUser<IAuthUser>();
+  const token = authUser?.token;
   const [yourLocation, setYourLocation] = useState<[number, number]>([
     -9.648927, -35.706977,
   ]);
@@ -73,7 +68,6 @@ const Index = () => {
 
       setYourLocation(currentLocation);
 
-      console.clear();
       console.log('currentLocation', currentLocation);
       console.log('location', location);
     } catch (error) {
@@ -86,30 +80,13 @@ const Index = () => {
     try {
       const res = await get({
         path: '/report',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
+        token,
       });
-
-      const reports = res.map((report: any) => ({
-        id: report.id,
-        location: [report.location.latitude, report.location.longitude],
-        type: 'wheelchair',
-        status: report.status.toLowerCase(),
-        resource: report.resource,
-        address: report.location.address,
-        complement: report.location.complement,
-      }));
-      setReports(reports);
+      console.log(res);
+      setReports(res as unknown as Report[]);
     } catch (error: unknown) {
       const e = error as Error;
       console.log(e);
-      if (e.response.data.error.message === 'jwt expired') {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        navigate('/login');
-      }
-
       toast.error(e.message);
     }
   };
@@ -118,6 +95,7 @@ const Index = () => {
     getReports();
     getLocationAddress();
   }, []);
+
   const openReport = (id: number) => {
     navigate(`/reporte/${id}`);
   };
@@ -166,7 +144,7 @@ const Index = () => {
           {reports.map((report) => (
             <Marker
               key={report.id}
-              position={report.location}
+              position={[report.location.latitude, report.location.longitude]}
               icon={markers['wheelchair'][report.status]}
               eventHandlers={{
                 click: () => openReport(report.id),
@@ -188,7 +166,7 @@ const Index = () => {
         </Row>
         <Row className="items-center justify-between">
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
                 className="rounded-full aspect-square border-border shadow-lg"

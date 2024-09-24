@@ -17,24 +17,51 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Separator } from '@components/ui/separator';
+import { IAuthUser } from '@interfaces/IAuthUser';
+import { Report } from '@interfaces/IReport';
+import { get } from '@services/api';
 import { center } from '@utils/center';
 import { maptilerKey } from '@utils/environment';
-import { Map } from 'leaflet';
-import { useRef } from 'react';
+import { LatLngExpression, Map } from 'leaflet';
+import { useEffect, useRef, useState } from 'react';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { RiArrowDropLeftLine } from 'react-icons/ri';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 
 export function Index() {
   const navigate = useNavigate();
+  const authUser = useAuthUser<IAuthUser>();
+  const token = authUser?.token;
   const mapRef = useRef<Map>(null);
   const reportId = window.location.pathname.split('/').pop();
+  const [reportData, setReportData] = useState<Report | null>(null);
 
   const goHome = () => {
     navigate('/home');
   };
 
-  const reportData = reports.find((report) => report.id === Number(reportId));
+  const getReport = async () => {
+    const response = await get({
+      path: `/reports/${reportId}`,
+      token,
+    });
+
+    setReportData(response as unknown as Report);
+  };
+
+  const getLatLng = (): LatLngExpression => {
+    const latitude = reportData?.location.latitude;
+    const longitude = reportData?.location.longitude;
+    if (latitude && longitude) {
+      return [latitude, longitude];
+    }
+    return center;
+  };
+
+  useEffect(() => {
+    getReport();
+  }, [reportId]);
 
   return (
     <div className="h-screen flex flex-col gap-5">
@@ -47,11 +74,11 @@ export function Index() {
       <div className="relative border-t border-b border-border h-[160px] w-full bg-blue-400">
         <MapContainer
           ref={mapRef}
-          center={reportData?.location || center}
+          center={getLatLng()}
           zoom={13}
           scrollWheelZoom={true}
           zoomControl={false}
-          //@ts-ignore
+          //@ts-expect-error: Workaround for leaflet typings
           loadingControl={true}
         >
           <TileLayer
@@ -59,7 +86,7 @@ export function Index() {
           />
           {reportData && (
             <Marker
-              position={reportData.location || center}
+              position={getLatLng()}
               icon={markers[reportData.type][reportData.status]}
             ></Marker>
           )}
@@ -129,9 +156,9 @@ export function Index() {
             Local
           </Label>
           <Column className="gap-1">
-            <div>{reportData?.address}</div>
+            <div>{reportData?.location.address}</div>
             <Separator className="border border-border" />
-            <div>{reportData?.complement}</div>
+            <div>{reportData?.location.complement}</div>
           </Column>
         </Column>
       </Column>

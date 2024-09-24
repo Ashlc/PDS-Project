@@ -1,25 +1,3 @@
-import { LatLngExpression } from 'leaflet';
-
-// interface Report {
-//   id: number;
-//   processNumber?: string;
-//   location: LatLngExpression;
-//   type: 'wheelchair' | 'blind';
-//   resource: string;
-//   status: 'pending' | 'evaluating' | 'ongoing' | 'finished';
-//   address: string;
-//   complement?: string;
-// }
-
-interface MyReport {
-  id: number;
-  location: LatLngExpression;
-  type: 'wheelchair' | 'blind';
-  resource: string;
-  status: 'pending' | 'evaluating' | 'ongoing' | 'finished';
-  date: string;
-}
-
 // export const reports: Report[] = [
 //   {
 //     id: 1,

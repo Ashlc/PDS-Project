@@ -1,19 +1,19 @@
 import { statusColors } from '@utils/statusColors';
 
 type Props = {
-  status: 'pending' | 'evaluating' | 'ongoing' | 'finished';
+  status: 'PENDING' | 'EVALUATING' | 'ONGOING' | 'FINISHED';
 };
 
 const index = ({ status }: Props) => {
   const statusTranslation = {
-    pending: 'Pendente',
-    evaluating: 'Em análise',
-    ongoing: 'Em andamento',
-    finished: 'Finalizado',
+    PENDING: 'Pendente',
+    EVALUATING: 'Em análise',
+    ONGOING: 'Em andamento',
+    FINISHED: 'Finalizado',
   };
   return (
     <div
-      className={`border px-6 py-2 rounded-full font-medium text-sm ${statusColors[status].background} ${statusColors[status].text} ${statusColors[status].border}`}
+      className={`border px-4 py-1 w-fit rounded-full font-medium text-xs ${statusColors[status].background} ${statusColors[status].text} ${statusColors[status].border}`}
     >
       {statusTranslation[status]}
     </div>

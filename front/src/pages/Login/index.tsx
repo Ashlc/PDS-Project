@@ -3,38 +3,48 @@ import Column from '@components/Column';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
+import { post } from '@services/api';
+import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { post } from '@services/api';
 import { toast } from 'sonner';
 
-interface ApiError {
-  response: {
-    data: {
-      message: string;
-    };
+type ErrorResponse = {
+  response?: {
+    status: number;
   };
-}
+};
 
 const Index = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  const signIn = useSignIn();
 
   const onSubmit = async (data: Record<string, unknown>) => {
+    toast.message('Fazendo login...');
     try {
-      toast.message('Fazendo login...');
       const res = await post({
         path: '/auth/login',
         data,
       });
+      console.log(res);
       console.clear();
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('userId', res.data.id);
+      signIn({
+        auth: {
+          token: res.data.token,
+          type: 'Bearer',
+        },
+        userState: res.data,
+      });
       toast.success('Login efetuado com sucesso!');
       navigate('/home');
-    } catch (error: unknown) {
-      const e = error as ApiError;
-      toast.error(`${e.response.data.message}`);
+    } catch (e: unknown) {
+      const error = e as ErrorResponse;
+      if (error.response?.status === 401) {
+        toast.error('Email ou senha incorretos');
+      } else {
+        toast.error('Erro ao fazer login');
+      }
     }
   };
   return (
