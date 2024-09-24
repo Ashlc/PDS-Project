@@ -9,7 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
-import { useGeolocation } from '@hooks/useGeolocation';
 import { IAuthUser } from '@interfaces/IAuthUser';
 import { IReport } from '@interfaces/IReport';
 import { get } from '@services/api';
@@ -31,7 +30,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const Index = () => {
-  const { location } = useGeolocation();
   const authUser = useAuthUser<IAuthUser>();
   const token = authUser?.token;
   const [yourLocation, setYourLocation] = useState<[number, number]>([
@@ -67,7 +65,6 @@ const Index = () => {
       );
 
       setYourLocation(currentLocation);
-
     } catch (error) {
       console.error(error);
       toast('Erro ao buscar endereço', { icon: <RiErrorWarningLine /> });
