@@ -22,6 +22,7 @@ export default function Index() {
 
   const logout = () => {
     signOut();
+    navigate('/login');
   };
 
   return (
@@ -34,20 +35,26 @@ export default function Index() {
           <h2>CONTA E CONFIGURAÇÕES</h2>
         </div>
         <Column className="space-y-8 ml-3 mt-5 items-start">
-          <button
+          <Button
+            variant={'ghost'}
             onClick={logout}
-            className="font-semibold text-lg w-full items-center space-x-2 flex flex-row"
+            className="w-fit items-center space-x-2 flex flex-row"
           >
             <p>SAIR</p>
             <RiLogoutBoxRLine size={24} />
-          </button>
-          <button>ALTERAR EMAIL</button>
-          <button>ALTERAR SENHA</button>
-          <button>POLÍTICA DE PRIVACIDADE</button>
-          <button>TERMOS DE USO</button>
+          </Button>
+          <Button variant={'ghost'}>ALTERAR EMAIL</Button>
+          <Button variant={'ghost'}>ALTERAR SENHA</Button>
+          <Button variant={'ghost'}>POLÍTICA DE PRIVACIDADE</Button>
+          <Button variant={'ghost'}>TERMOS DE USO</Button>
           <Dialog>
-            <DialogTrigger className="text-red-500 font-semibold">
-              APAGAR CONTA
+            <DialogTrigger asChild>
+              <Button
+                variant={'ghost'}
+                className="text-red-500 hover:text-red-600"
+              >
+                APAGAR CONTA
+              </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader className="text-left">
