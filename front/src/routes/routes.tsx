@@ -1,5 +1,8 @@
+import Account from '@pages/Account';
 import Home from '@pages/Home';
 import Landing from '@pages/Landing';
+import Login from '@pages/Login';
+import MyReports from '@pages/MyReports';
 import Report from '@pages/Report';
 import ViewReport from '@pages/ViewReport';
 import { createBrowserRouter } from 'react-router-dom';
@@ -12,9 +15,12 @@ export const AppRoutes = createBrowserRouter([
       { path: '/home', element: <Home /> },
       { path: '/reporte/:id', element: <ViewReport /> },
       { path: '/reporte', element: <Report /> },
+      { path: '/meus-reportes', element: <MyReports /> },
+      { path: '/conta', element: <Account /> },
     ],
   },
   { path: '/', element: <Landing /> },
+  { path: '/login', element: <Login /> },
 ]);
 
 export default AppRoutes;

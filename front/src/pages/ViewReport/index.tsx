@@ -1,6 +1,7 @@
 import { markers } from '@assets/markers/markers';
 import Column from '@components/Column';
 import ReportType from '@components/ReportType';
+import Row from '@components/Row';
 import StatusTag from '@components/StatusTag';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
@@ -16,42 +17,68 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Separator } from '@components/ui/separator';
-import { reports } from '@services/mock';
+import { IAuthUser } from '@interfaces/IAuthUser';
+import { IReport } from '@interfaces/IReport';
+import { get } from '@services/api';
 import { center } from '@utils/center';
 import { maptilerKey } from '@utils/environment';
-import { Map } from 'leaflet';
-import { useRef } from 'react';
+import { LatLngExpression, Map } from 'leaflet';
+import { useEffect, useRef, useState } from 'react';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { RiArrowDropLeftLine } from 'react-icons/ri';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 
 export function Index() {
   const navigate = useNavigate();
+  const authUser = useAuthUser<IAuthUser>();
+  const token = authUser?.token;
   const mapRef = useRef<Map>(null);
   const reportId = window.location.pathname.split('/').pop();
+  const [reportData, setReportData] = useState<IReport | null>(null);
 
   const goHome = () => {
     navigate('/home');
   };
 
-  const reportData = reports.find((report) => report.id === Number(reportId));
+  const getReport = async () => {
+    const response = await get({
+      path: `/reports/${reportId}`,
+      token,
+    });
+
+    setReportData(response as unknown as IReport);
+  };
+
+  const getLatLng = (): LatLngExpression => {
+    const latitude = reportData?.location.latitude;
+    const longitude = reportData?.location.longitude;
+    if (latitude && longitude) {
+      return [latitude, longitude];
+    }
+    return center;
+  };
+
+  useEffect(() => {
+    getReport();
+  }, [reportId]);
 
   return (
     <div className="h-screen flex flex-col gap-5">
-      <div className="flex flex-row w-full px-4 justify-between items-center font-semibold">
+      <Row className="w-full px-4 justify-between items-center font-semibold">
         <Button variant="ghost" size="icon" onClick={goHome}>
           <RiArrowDropLeftLine size={24} />
         </Button>
         <h2>REPORTE</h2>
-      </div>
+      </Row>
       <div className="relative border-t border-b border-border h-[160px] w-full bg-blue-400">
         <MapContainer
           ref={mapRef}
-          center={reportData?.location || center}
+          center={getLatLng()}
           zoom={13}
           scrollWheelZoom={true}
           zoomControl={false}
-          //@ts-ignore
+          //@ts-expect-error: Workaround for leaflet typings
           loadingControl={true}
         >
           <TileLayer
@@ -59,7 +86,7 @@ export function Index() {
           />
           {reportData && (
             <Marker
-              position={reportData.location || center}
+              position={getLatLng()}
               icon={markers[reportData.type][reportData.status]}
             ></Marker>
           )}
@@ -86,7 +113,7 @@ export function Index() {
         </div>
       </div>
       <Column className="px-4 pt-4 pb-8 gap-8">
-        <div className="flex items-center flex-row gap-4 w-full">
+        <Row className="items-center gap-4 w-full">
           <ReportType type={reportData?.type} />
           <Column>
             <div className="text-sm text-muted-foreground">
@@ -94,7 +121,7 @@ export function Index() {
             </div>
             <div className=" text-base font-medium">{reportData?.resource}</div>
           </Column>
-        </div>
+        </Row>
         <Column className="gap-2">
           <Label htmlFor="fotos" className=" text-muted-foreground">
             Fotos
@@ -129,9 +156,9 @@ export function Index() {
             Local
           </Label>
           <Column className="gap-1">
-            <div>{reportData?.address}</div>
+            <div>{reportData?.location.address}</div>
             <Separator className="border border-border" />
-            <div>{reportData?.complement}</div>
+            <div>{reportData?.location.complement}</div>
           </Column>
         </Column>
       </Column>

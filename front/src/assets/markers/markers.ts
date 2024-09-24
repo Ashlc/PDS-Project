@@ -16,6 +16,12 @@ import WheelchairOngoing from './ongoing/wheelchair_ongoing.svg';
 import BlindDone from './done/blind_done.svg';
 import WheelchairDone from './done/wheelchair_done.svg';
 
+interface IMarkers {
+  [key: string]: {
+    [key: string]: L.Icon;
+  };
+}
+
 const marker = (icon: string): L.Icon =>
   L.icon({
     iconUrl: icon,
@@ -24,17 +30,17 @@ const marker = (icon: string): L.Icon =>
     popupAnchor: [-3, -76],
   });
 
-export const markers = {
+export const markers: IMarkers = {
   wheelchair: {
-    pending: marker(WheelchairPending),
-    evaluating: marker(WheelchairEvaluating),
-    ongoing: marker(WheelchairOngoing),
-    finished: marker(WheelchairDone),
+    PENDING: marker(WheelchairPending),
+    EVALUATING: marker(WheelchairEvaluating),
+    ONGOING: marker(WheelchairOngoing),
+    FINISHED: marker(WheelchairDone),
   },
   blind: {
-    pending: marker(BlindPending),
-    evaluating: marker(BlindEvaluating),
-    ongoing: marker(BlindOngoing),
-    finished: marker(BlindDone),
+    PENDING: marker(BlindPending),
+    EVALUATED: marker(BlindEvaluating),
+    ONGOING: marker(BlindOngoing),
+    FINISHED: marker(BlindDone),
   },
 };

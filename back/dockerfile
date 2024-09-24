@@ -1,0 +1,21 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+RUN npm install -g nodemon
+
+COPY . .
+
+EXPOSE 3001
+
+RUN npx prisma generate
+
+# RUN npx prisma db push
+
+# RUN npx prisma db seed
+
+CMD ["npm", "run", "start"]

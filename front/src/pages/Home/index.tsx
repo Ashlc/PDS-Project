@@ -1,5 +1,6 @@
 import { markers } from '@assets/markers/markers';
 import Column from '@components/Column';
+import Row from '@components/Row';
 import Search from '@components/Search';
 import { Button } from '@components/ui/button';
 import {
@@ -9,12 +10,17 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { useGeolocation } from '@hooks/useGeolocation';
-import { reports } from '@services/mock';
+import { IAuthUser } from '@interfaces/IAuthUser';
+import { IReport } from '@interfaces/IReport';
+import { get } from '@services/api';
 import { maptilerKey } from '@utils/environment';
+import { getLocation } from '@utils/getLocation';
 import { Map } from 'leaflet';
-import { useEffect, useRef } from 'react';
-import { MdMenu, MdNotAccessible } from 'react-icons/md';
+import { useEffect, useRef, useState } from 'react';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import { MdAccountCircle, MdMenu, MdNotAccessible } from 'react-icons/md';
 import {
+  RiErrorWarningLine,
   RiEyeOffFill,
   RiFilter2Fill,
   RiFocus3Line,
@@ -22,25 +28,73 @@ import {
 } from 'react-icons/ri';
 import { CircleMarker, MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const Index = () => {
-  const { location, getLocation } = useGeolocation();
+  const { location } = useGeolocation();
+  const authUser = useAuthUser<IAuthUser>();
+  const token = authUser?.token;
+  const [yourLocation, setYourLocation] = useState<[number, number]>([
+    -9.648927, -35.706977,
+  ]);
   const navigate = useNavigate();
   const mapRef = useRef<Map>(null);
 
+  const [reports, setReports] = useState<IReport[]>([]);
+
   const navigateToReport = () => {
-    console.log('navigate to report');
+    navigate('/reporte');
   };
 
   const triggerLocation = () => {
-    getLocation();
+    getLocationAddress();
+  };
+
+  const getLocationAddress = async () => {
+    try {
+      const currentLocation = (await getLocation()) as [number, number];
+
+      if (!currentLocation) {
+        return;
+      }
+
+      mapRef.current?.flyTo(
+        {
+          lat: currentLocation[0],
+          lng: currentLocation[1],
+        },
+        15,
+      );
+
+      setYourLocation(currentLocation);
+
+      console.log('currentLocation', currentLocation);
+      console.log('location', location);
+    } catch (error) {
+      console.error(error);
+      toast('Erro ao buscar endereço', { icon: <RiErrorWarningLine /> });
+    }
+  };
+
+  const getReports = async () => {
+    try {
+      const res = await get({
+        path: '/report',
+        token,
+      });
+      console.log(res);
+      setReports(res as unknown as IReport[]);
+    } catch (error: unknown) {
+      const e = error as Error;
+      console.log(e);
+      toast.error(e.message);
+    }
   };
 
   useEffect(() => {
-    if (location && mapRef.current) {
-      mapRef.current.flyTo(location, 15);
-    }
-  }, [location]);
+    getReports();
+    getLocationAddress();
+  }, []);
 
   const openReport = (id: number) => {
     navigate(`/reporte/${id}`);
@@ -49,7 +103,7 @@ const Index = () => {
   return (
     <Column className="justify-between h-full w-full relative">
       <Column className="gap-2 fixed top-10 left-8 right-8 z-10">
-        <div className="w-full items-center justify-center flex flex-row gap-2">
+        <Row className="w-full items-center justify-center gap-2">
           <Search />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -59,7 +113,7 @@ const Index = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent sideOffset={8} className="p-2">
-              <DropdownMenuItem className="flex flex-row gap-2">
+              <DropdownMenuItem className="gap-2">
                 <MdNotAccessible size={20} />
                 <p>Inacessível para cadeira de rodas</p>
               </DropdownMenuItem>
@@ -69,13 +123,13 @@ const Index = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+        </Row>
       </Column>
       <div className="fixed top-0 left-0 h-screen w-screen overflow-clip bg-blue-400">
         <MapContainer
           ref={mapRef}
-          center={location}
-          zoom={13}
+          center={yourLocation}
+          zoom={15}
           scrollWheelZoom={true}
           zoomControl={false}
         >
@@ -83,15 +137,15 @@ const Index = () => {
             url={`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=${maptilerKey}`}
           />
           <CircleMarker
-            center={location}
+            center={yourLocation}
             pathOptions={{ color: 'black' }}
             radius={10}
           />
           {reports.map((report) => (
             <Marker
               key={report.id}
-              position={report.location}
-              icon={markers[report.type][report.status]}
+              position={[report.location.latitude, report.location.longitude]}
+              icon={markers['wheelchair'][report.status]}
               eventHandlers={{
                 click: () => openReport(report.id),
               }}
@@ -100,23 +154,44 @@ const Index = () => {
         </MapContainer>
       </div>
       <div className="fixed bottom-10 left-8 right-8 flex flex-col gap-10 z-10">
-        <div className="flex flex-row justify-end rounded-full">
+        <Row className="justify-end rounded-full">
           <Button
-            variant={'outline'}
-            size={'icon'}
-            className="border-2 border-border rounded-full"
+            variant="outline"
+            size="icon"
+            className="rounded-full shadow-lg border-border"
             onClick={triggerLocation}
           >
             <RiFocus3Line size={20} />
           </Button>
-        </div>
-        <div className="flex flex-row items-center justify-between">
-          <Button
-            className="rounded-full aspect-square bg-background text-black border-2 border-border shadow-sm"
-            size="icon"
-          >
-            <MdMenu />
-          </Button>
+        </Row>
+        <Row className="items-center justify-between">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="rounded-full aspect-square border-border shadow-lg"
+                size="icon"
+              >
+                <MdMenu />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent sideOffset={12} className="p-2 ml-2">
+              <DropdownMenuItem
+                className="gap-4"
+                onClick={() => navigate('/meus-reportes')}
+              >
+                <RiMegaphoneFill size={17} />
+                <p>Meus reportes</p>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="gap-4"
+                onClick={() => navigate('/conta')}
+              >
+                <MdAccountCircle size={17} />
+                <p>Minha conta</p>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button
             className="w-fit gap-2 px-8 py-6 items-center border-2 border-border shadow-sm rounded-full"
             onClick={navigateToReport}
@@ -124,7 +199,7 @@ const Index = () => {
             <p>Novo reporte</p>
             <RiMegaphoneFill size={21} />
           </Button>
-        </div>
+        </Row>
       </div>
     </Column>
   );

@@ -1,4 +1,5 @@
 import Files from '@components/Files';
+import Row from '@components/Row';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
@@ -10,12 +11,15 @@ import {
   SelectValue,
 } from '@components/ui/select';
 import { Textarea } from '@components/ui/textarea';
+import { IAuthUser } from '@interfaces/IAuthUser';
+import { post } from '@services/api';
 import { reverseGeocode } from '@services/nominatim';
 import { center } from '@utils/center';
 import { maptilerKey } from '@utils/environment';
 import { getLocation } from '@utils/getLocation';
 import { Map } from 'leaflet';
 import { useRef, useState } from 'react';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { Controller, useForm } from 'react-hook-form';
 import {
   RiArrowDropLeftLine,
@@ -26,18 +30,30 @@ import { CircleMarker, MapContainer, TileLayer } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
+interface ILocation {
+  address: string;
+  complement: string;
+  lat: number;
+  long: number;
+}
+
+interface IReport {
+  resource: string;
+  description: string;
+  photos: File[];
+  locationId: number;
+  userId: number;
+}
+
 const Index = () => {
   const [location, setLocation] = useState<[number, number]>(center);
   const [address, setAddress] = useState<string>('');
+  const authUser = useAuthUser<IAuthUser>();
+  const token = authUser ? authUser.token : '';
   const [loading, setLoading] = useState<boolean>(false);
   const mapRef = useRef<Map>(null);
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, control } = useForm();
 
   const goHome = () => {
     navigate('/home');
@@ -75,23 +91,72 @@ const Index = () => {
     }
   };
 
-  const onSubmit = (data: unknown) => {
-    data.address = address;
-    console.log(data);
+  const createAdress = async (address: string, complement: string) => {
+    const data = {
+      address: address,
+      complement: complement,
+      latitude: location[0],
+      longitude: location[1],
+    };
+
+    const res = await post({
+      path: '/location',
+      data,
+      token,
+    });
+
+    return res.data.id;
+  };
+
+  const createReport = async (
+    resource: string,
+    description: string,
+    images: File[],
+    locationId: number,
+  ) => {
+    const data = {
+      processNumber: '',
+      resource: resource,
+      description: description,
+      photos: images,
+      locationId: Number(locationId),
+      userId: Number(localStorage.getItem('userId')),
+      status: 'PENDING',
+    };
+
+    await post({
+      path: '/report',
+      data,
+      token,
+    });
     toast('Seu relatório foi enviado com sucesso.', {
       description: 'Obrigado por contribuir com a acessibilidade!',
     });
     goHome();
   };
 
+  const onSubmit = async (data: unknown) => {
+    const { complement } = data as ILocation;
+    try {
+      const adressId = await createAdress(address, complement);
+      const { resource, description, photos } = data as IReport;
+      await createReport(resource, description, photos, adressId);
+    } catch (error) {
+      console.error(error);
+      toast('Erro ao criar reporte', { icon: <RiErrorWarningLine /> });
+      return;
+    }
+    // goHome();
+  };
+
   return (
     <div className="flex flex-col gap-5 min-h-full w-full">
-      <div className="flex flex-row w-full px-4 justify-between items-center font-semibold">
+      <Row className="w-full px-4 justify-between items-center font-semibold">
         <Button variant="ghost" size="icon" onClick={goHome}>
           <RiArrowDropLeftLine size={24} />
         </Button>
         <h2>REPORTAR ACESSIBILIDADE</h2>
-      </div>
+      </Row>
       <div className="border-t border-b border-border h-[160px] bg-blue-400">
         <MapContainer
           ref={mapRef}
@@ -99,7 +164,7 @@ const Index = () => {
           zoom={13}
           scrollWheelZoom={true}
           zoomControl={false}
-          //@ts-ignore
+          //@ts-expect-error: Workaround for leaflet typings
           loadingControl={true}
         >
           <TileLayer
@@ -120,7 +185,7 @@ const Index = () => {
       >
         <div className="grid items-center gap-2">
           <Label htmlFor="localização">Localização</Label>
-          <div className="flex flex-row gap-4 items-center h-fit">
+          <Row className="gap-4 items-center h-fit">
             <Controller
               name="address"
               control={control}
@@ -145,7 +210,7 @@ const Index = () => {
             >
               <RiFocus3Line />
             </Button>
-          </div>
+          </Row>
         </div>
         <div className="grid items-center gap-2">
           <Label htmlFor="complemento">Complemento</Label>
@@ -161,7 +226,7 @@ const Index = () => {
             Selecione o(s) recurso(s) não encontrado(s) ou com defeito(s)
           </div>
           <Controller
-            name="type"
+            name="resource"
             control={control}
             render={({ field }) => (
               <Select
@@ -175,10 +240,10 @@ const Index = () => {
                   <SelectValue placeholder="Selecione o(s) recurso(s)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="rampa">Rampa de acesso</SelectItem>
-                  <SelectItem value="elevador">Elevador</SelectItem>
-                  <SelectItem value="corrimão">Corrimão</SelectItem>
-                  <SelectItem value="sonora">Sinalização sonora</SelectItem>
+                  <SelectItem value="wheelchair">Rampa de acesso</SelectItem>
+                  <SelectItem value="wheelchair">Elevador</SelectItem>
+                  <SelectItem value="blind">Corrimão</SelectItem>
+                  <SelectItem value="blind">Sinalização sonora</SelectItem>
                 </SelectContent>
               </Select>
             )}
@@ -186,7 +251,11 @@ const Index = () => {
         </div>
         <div className="grid items-center gap-2">
           <Label htmlFor="observações">Observações</Label>
-          <Textarea placeholder="Digite aqui" {...register} />
+          <Textarea
+            id="description"
+            placeholder="Digite aqui"
+            {...register('description')}
+          />
         </div>
         <Controller
           name="images"
@@ -198,11 +267,16 @@ const Index = () => {
             </div>
           )}
         />
-        <div className=" flex justify-center flex-row">
-          <Button variant={'default'} className="w-full" type="submit">
+        <Row className=" flex justify-center">
+          <Button
+            variant={'default'}
+            className="w-full"
+            type="submit"
+            disabled={loading}
+          >
             ENVIAR DENÚNCIA
           </Button>
-        </div>
+        </Row>
       </form>
     </div>
   );
