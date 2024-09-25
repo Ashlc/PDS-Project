@@ -81,7 +81,7 @@ const Index = () => {
             variant="outline"
             type="button"
             className="text-primary w-full"
-            onClick={() => console.log('cadastro')}
+            onClick={() => navigate('/cadastro')}
           >
             Cadastre-se
           </Button>
