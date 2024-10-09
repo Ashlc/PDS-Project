@@ -15,7 +15,7 @@ async function isUnique(processNumber) {
     const existingReport = await prisma.report.findUnique({
         where: { processNumber },
     });
-    return !existingReport; 
+    return !existingReport;
 }
 
 class ReportController {
@@ -105,12 +105,12 @@ class ReportController {
             res.status(500).json({ message: "Error deleting report", error });
         }
     }
-    
+
     async filterReports(req, res) {
         const { status, locationId, startDate, endDate, userId, processNumber } = req.body;
-        
+
         const filters = {};
-        
+
         // Log para verificar os parâmetros recebidos
         console.log("Parâmetros recebidos:", { status, locationId, startDate, endDate, userId, processNumber });
 
@@ -139,12 +139,12 @@ class ReportController {
                     user: true,      // Inclui o usuário associado
                 },
             });
-    
+
             // Verifica se relatórios foram encontrados
             if (reports.length === 0) {
                 return res.status(404).json({ message: "Nenhum relatório encontrado" });
             }
-    
+
             // Retorna os relatórios encontrados com código 200 (sucesso)
             return res.status(200).json({
                 message: "Relatórios encontrados com sucesso",
@@ -153,12 +153,25 @@ class ReportController {
         } catch (error) {
             // Loga o erro completo no console para depuração
             console.error("Erro ao buscar relatórios:", error);
-    
+
             // Retorna uma mensagem detalhada do erro para o cliente
             return res.status(500).json({
                 message: "Erro ao buscar relatórios",
                 error: error.message || "Erro desconhecido"
             });
+        }
+    }
+
+    // Novo método para gerar o PDF com base nos filtros aplicados
+    async downloadReportPDF(req, res) {
+        console.log("Requisição para download de PDF recebida:", req.body);
+        const {processNumber } = req.body;
+        try {
+            // Chama o serviço para gerar o PDF dos relatórios
+            await reportService.generateReportPDF(processNumber , res);
+        } catch (error) {
+            console.error("Erro ao processar download de PDF:", error);
+            res.status(500).json({ message: "Erro ao processar download de PDF", error: error.message });
         }
     }
 }

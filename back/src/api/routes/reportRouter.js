@@ -10,5 +10,5 @@ router.post("/", middleware(["admin", "user"]), reportController.createReport);
 router.put("/:id", middleware(["admin", "user"]), reportController.updateReport);
 router.delete("/:id", middleware(["admin", "user"]), reportController.deleteReport);
 router.post('/filter/', middleware(["admin", "user"]), reportController.filterReports);
-
+router.post('/download-pdf', reportController.downloadReportPDF);
 module.exports = router;

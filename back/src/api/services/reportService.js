@@ -1,4 +1,5 @@
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require('@prisma/client');
+const PDFDocument = require('pdfkit');
 const prisma = new PrismaClient();
 
 class ReportService {
@@ -14,6 +15,16 @@ class ReportService {
     async getReportById(id) {
         return await prisma.report.findUnique({
             where: { id: Number(id) },
+            include: {
+                location: true,
+                user: true,
+            },
+        });
+    }   async getReportprocessNumber(processNumber) {
+        console.log(processNumber);
+        return await prisma.report.findMany({
+            where: { processNumber: processNumber },
+
             include: {
                 location: true,
                 user: true,
@@ -40,39 +51,51 @@ class ReportService {
         });
     }
 
-    async filterReports({ status, locationId, startDate, endDate, userId, processNumber }) {
-        const filters = {};
-    
-        // Validação dos parâmetros do status
-        if (locationId) filters.locationId = Number(locationId);
-        if (status && ['PENDING', 'IN_REVIEW', 'IN_PROGRESS', 'RESOLVED'].includes(status)) {
-            filters.status = status;
+    async filterReports(filters) {
+        // Filtro de relatórios com base nos parâmetros fornecidos
+        return await prisma.report.findMany({
+            where: filters,
+            include: {
+                location: true,
+                user: true,
+            },
+        });
+    }
+
+    // Método para gerar PDF
+    async generateReportPDF(processNumber, res) {
+        const reports = await this.getReportprocessNumber(processNumber);
+        console.log(reports);
+        
+        if (reports.length === 0) {
+            return res.status(404).json({ message: "Nenhum relatório encontrado" });
         }
-        if (userId) filters.userId = Number(userId);
-        if (processNumber) filters.processNumber = processNumber;
-    
-        if (startDate || endDate) {
-            filters.createdAt = {};
-            if (startDate) filters.createdAt.gte = new Date(startDate);
-            if (endDate) filters.createdAt.lte = new Date(endDate);
-        }
-    
-        // Log para depuração
-        console.log("Filtros gerados para a consulta:", filters);
-    
-        try {
-            return await prisma.report.findMany({
-                where: filters,
-                include: {
-                    location: true,
-                    user: true,
-                },
-            });
-        } catch (error) {
-            // Log do erro completo no console
-            console.error("Erro de validação no Prisma:", error);
-            throw new Error("Erro ao buscar relatórios: " + error.message);
-        }
+
+        // Inicia a criação do PDF
+        const doc = new PDFDocument();
+
+        // Definindo cabeçalhos para o arquivo PDF
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename=reports.pdf');
+
+        // Envia o conteúdo do PDF como resposta
+        doc.pipe(res);
+
+        // Conteúdo do PDF
+        doc.fontSize(18).text('Relatórios Filtrados', { align: 'center' });
+        doc.moveDown();
+
+        reports.forEach(report => {
+            doc.fontSize(14).text(`ID: ${report.id}`);
+            doc.text(`Status: ${report.status}`);
+            doc.text(`Localização: ${report.location.address}`);
+            doc.text(`Usuário: ${report.user.email}`);
+            doc.text(`Descrição: ${report.description}`);
+            doc.moveDown();
+        });
+
+        doc.end(); // Finaliza a criação do PDF
     }
 }
+
 module.exports = new ReportService();
