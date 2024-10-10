@@ -164,14 +164,15 @@ class ReportController {
 
     // Novo método para gerar o PDF com base nos filtros aplicados
     async downloadReportPDF(req, res) {
-        console.log("Requisição para download de PDF recebida:", req.body);
-        const {processNumber } = req.body;
         try {
-            // Chama o serviço para gerar o PDF dos relatórios
-            await reportService.generateReportPDF(processNumber , res);
+            // Extrair os números de processo do corpo da requisição
+            const processNumbers = req.body.reports.map(report => report.processNumber);
+
+            // Chamar o serviço para gerar o PDF
+            await reportService.generateReportPDF(processNumbers, res);
         } catch (error) {
-            console.error("Erro ao processar download de PDF:", error);
-            res.status(500).json({ message: "Erro ao processar download de PDF", error: error.message });
+            console.error("Erro ao gerar o PDF: ", error);
+            res.status(500).json({ message: "Erro ao gerar o PDF" });
         }
     }
 }

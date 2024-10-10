@@ -20,11 +20,17 @@ class ReportService {
                 user: true,
             },
         });
-    }   async getReportprocessNumber(processNumber) {
-        console.log(processNumber);
-        return await prisma.report.findMany({
-            where: { processNumber: processNumber },
+    }
 
+    // Modificar o método para aceitar múltiplos processNumbers
+    async getReportprocessNumbers(processNumbers) {
+        console.log("processNumbers recebidos: ", processNumbers);
+        return await prisma.report.findMany({
+            where: {
+                processNumber: {
+                    in: processNumbers,  // Filtrar apenas os processNumbers fornecidos
+                },
+            },
             include: {
                 location: true,
                 user: true,
@@ -62,39 +68,39 @@ class ReportService {
         });
     }
 
-    // Método para gerar PDF
-    async generateReportPDF(processNumber, res) {
-        const reports = await this.getReportprocessNumber(processNumber);
-        console.log(reports);
-        
-        if (reports.length === 0) {
-            return res.status(404).json({ message: "Nenhum relatório encontrado" });
-        }
+    // Método para gerar PDF com múltiplos processNumbers
+    async generateReportPDF(processNumbers, res) {
+        try {
+            const reports = await this.getReportprocessNumbers(processNumbers);
 
-        // Inicia a criação do PDF
-        const doc = new PDFDocument();
+            if (reports.length === 0) {
+                return res.status(404).json({ message: "Nenhum relatório encontrado" });
+            }
 
-        // Definindo cabeçalhos para o arquivo PDF
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'attachment; filename=reports.pdf');
+            const doc = new PDFDocument();
 
-        // Envia o conteúdo do PDF como resposta
-        doc.pipe(res);
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', 'attachment; filename=reports.pdf');
 
-        // Conteúdo do PDF
-        doc.fontSize(18).text('Relatórios Filtrados', { align: 'center' });
-        doc.moveDown();
+            doc.pipe(res);
 
-        reports.forEach(report => {
-            doc.fontSize(14).text(`ID: ${report.id}`);
-            doc.text(`Status: ${report.status}`);
-            doc.text(`Localização: ${report.location.address}`);
-            doc.text(`Usuário: ${report.user.email}`);
-            doc.text(`Descrição: ${report.description}`);
+            doc.fontSize(18).text('Relatórios Gerados', { align: 'center' });
             doc.moveDown();
-        });
 
-        doc.end(); // Finaliza a criação do PDF
+            reports.forEach(report => {
+                doc.fontSize(14).text(`ID: ${report.id}`);
+                doc.text(`Status: ${report.status}`);
+                doc.text(`Localização: ${report.location.address}`);
+                doc.text(`Usuário: ${report.user.email}`);
+                doc.text(`Descrição: ${report.description}`);
+                doc.moveDown();
+            });
+
+            doc.end();
+        } catch (error) {
+            console.error("Erro ao gerar o PDF: ", error);
+            return res.status(500).json({ message: "Erro ao gerar o PDF" });
+        }
     }
 }
 
