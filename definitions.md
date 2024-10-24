@@ -332,27 +332,27 @@ Representa os meios de comunicação, tanto locais quanto nacionais, responsáve
 ## Equipe
 
 Maria Isadora Bomfim Paz <br />
-*Cargo a definir* <br />
+*Dev Front End* <br />
 *mibp@ic.ufal.br* <br />
 https://github.com/Ashlc
 
 Edvar Monteiro da Silva Neto <br />
-*Cargo a definir* <br />
+*Dev Back Endr* <br />
 *emsn@ic.ufal.br* <br />
 https://github.com/Edvar82
 
 José Janio Marinho de Castro Junior <br />
-*Cargo a definir* <br />
+*Dev Back End* <br />
 *jjmc@ic.ufal.br* <br />
 https://github.com/Jani0Marinho
 
 João Pedro Castelo Branco Mendes <br />
-*Cargo a definir* <br />
+*Dev Front End* <br />
 *jpcbm@ic.ufal.br* <br />
 https://github.com/Pedr0Castel0
 
 Carlos Eduardo Noslin Tenório Galvão <br />
-*Cargo a definir* <br />
+*Dev Back End* <br />
 *centg@ic.ufal.br* <br />
 https://github.com/cedugalvao
 
